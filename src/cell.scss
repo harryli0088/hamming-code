@@ -1,0 +1,18 @@
+.cell {
+  width: 6em;
+  height: 6em;
+  text-align: center;
+  position: relative;
+  border: 2px solid black;
+
+  .value {
+    font-size: 3em;
+  }
+
+  .cellIndex {
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    border: 1px solid black;
+  }
+}
