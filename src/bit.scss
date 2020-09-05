@@ -1,8 +1,19 @@
-.cell {
+.bit {
   text-align: center;
+  transition: 0.5s;
+  transition-property: transform;
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.8);
+  }
+}
+
+
+.cell {
   position: absolute;
   border: 2px solid black;
-  cursor: pointer;
+
 
   .value {
     font-size: 3em;
@@ -22,4 +33,21 @@
   display: inline-block;
   text-align: center;
   cursor: pointer;
+}
+
+.zeroBit {
+  background-color: gray;
+}
+.errorBit {
+  background-color: red;
+}
+.parityBit {
+  background-color: #82E0AA;
+}
+.mousedOver {
+  background-color: #ddd;
+}
+
+.opacityDimmed {
+  opacity: 0.1;
 }

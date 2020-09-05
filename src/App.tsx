@@ -2,6 +2,7 @@ import React from 'react';
 
 import Bit from "Bit"
 import generateData from "utils/generateData"
+import validateDataArray from "utils/validateDataArray"
 import './App.scss';
 
 interface AppState {
@@ -25,7 +26,13 @@ class App extends React.Component<{},AppState> {
     }
   }
 
-  onClickBit = (bitIndex: number) => {
+  rectifyIncorrectBit = (errorIndex: number) => {
+    if(errorIndex > 0) { //if this is a bit to switch
+      this.switchBit(errorIndex)
+    }
+  }
+
+  switchBit = (bitIndex: number) => {
     const dataCopy = this.state.data.slice()
     dataCopy[bitIndex] = dataCopy[bitIndex]>0 ? 0 : 1 //switch the bit
     this.setState({data: dataCopy})
@@ -51,6 +58,7 @@ class App extends React.Component<{},AppState> {
     } = this.state
 
     const dimension = Math.sqrt(data.length)
+    const errorIndex = validateDataArray(data)
 
     const numBits = data.length - 1
     const numParityBits = Math.ceil(Math.log(numBits)/Math.log(2))
@@ -61,14 +69,22 @@ class App extends React.Component<{},AppState> {
         <h1>Hamming Codes</h1>
 
         <div>
-          Number of bits: {[2,4,8,16].map(newDimension => <button onClick={e => this.setState({data: generateData(newDimension)})}>{newDimension*newDimension-1}</button>)}
+          Number of bits: {[2,4,8,16].map(newDimension => <button key={newDimension} onClick={e => this.setState({data: generateData(newDimension)})}>{newDimension*newDimension-1}</button>)}
         </div>
 
         <div>
           Efficiency: {numBits - numParityBits}/{numBits} = {(100*efficiency).toFixed(2)}%
         </div>
 
-        <div><button>Correct Parity Bits</button></div>
+        <div>
+          <button
+            onClick={e => this.rectifyIncorrectBit(errorIndex)}
+            disabled={errorIndex === 0}
+          >
+            Rectify Incorrect Bit
+          </button>
+        </div>
+        <div><button>Set Parity Bits to Message</button></div>
 
         <div>
           Show Binary <input type="checkbox" checked={showBinary} onChange={e => this.setState({showBinary:!showBinary})}/>
@@ -86,10 +102,11 @@ class App extends React.Component<{},AppState> {
               bitIndex={bitIndex}
               data={data}
               dimension={dimension}
+              errorIndex={errorIndex}
               height={bitHeight}
               isCell
               mousedOverBitIndex={mousedOverBitIndex}
-              onClickBit={this.onClickBit}
+              onClickBit={this.switchBit}
               onMouseOverBit={this.onMouseOverBit}
               showBinary={showBinary}
               width={bitWidth}
@@ -111,10 +128,11 @@ class App extends React.Component<{},AppState> {
                 bitIndex={bitIndex}
                 data={data}
                 dimension={dimension}
+                errorIndex={errorIndex}
                 height={bitHeight}
                 isCell={false}
                 mousedOverBitIndex={mousedOverBitIndex}
-                onClickBit={this.onClickBit}
+                onClickBit={this.switchBit}
                 onMouseOverBit={this.onMouseOverBit}
                 showBinary={showBinary}
                 width={bitWidth}
