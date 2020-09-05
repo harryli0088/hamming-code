@@ -10,6 +10,7 @@ interface AppState {
   bitWidth: number,
   data: number[],
   mousedOverBitIndex: number,
+  numberBits: number,
   showBinary: boolean,
 }
 
@@ -17,11 +18,14 @@ class App extends React.Component<{},AppState> {
   constructor(props:{}) {
     super(props)
 
+    const numberBits = 6
+
     this.state = {
       bitHeight: 100,
       bitWidth: 100,
-      data: generateData(16),
+      data: generateData(numberBits),
       mousedOverBitIndex: -1,
+      numberBits,
       showBinary: true,
     }
   }
@@ -48,6 +52,11 @@ class App extends React.Component<{},AppState> {
 
   onMouseOverBit = (bitIndex: number) => this.setState({mousedOverBitIndex:bitIndex})
 
+  generateNewData = (numberBits: number) => this.setState({
+    data: generateData(numberBits),
+    numberBits,
+  })
+
   render() {
     const {
       bitHeight,
@@ -57,18 +66,20 @@ class App extends React.Component<{},AppState> {
       showBinary,
     } = this.state
 
-    const dimension = Math.sqrt(data.length)
+    const numColumns = Math.ceil(Math.sqrt(data.length))
+    const numRows = Math.ceil(data.length/numColumns)
+    console.log(numColumns,numRows)
     const errorIndex = validateDataArray(data)
 
-    const numBits = data.length - 1
-    const numParityBits = Math.ceil(Math.log(numBits)/Math.log(2))
-    const efficiency = (numBits - numParityBits) / numBits
+    const numParityBits = Math.ceil(Math.log(data.length)/Math.log(2))
+    const efficiency = (data.length - numParityBits) / data.length
 
     const sharedBitProps = {
-      dimension,
       errorIndex,
       height: bitHeight,
       mousedOverBitIndex,
+      numColumns,
+      numRows,
       onClickBit: this.switchBit,
       onMouseOverBit: this.onMouseOverBit,
       paddedBinaryLength: Math.ceil(Math.log(data.length)/Math.log(2)),
@@ -81,11 +92,24 @@ class App extends React.Component<{},AppState> {
         <h1>Hamming Codes</h1>
 
         <div>
-          Number of bits: {[2,4,8,16].map(newDimension => <button key={newDimension} onClick={e => this.setState({data: generateData(newDimension*newDimension)})}>{newDimension*newDimension-1}</button>)}
+          <div>
+            Generate new data for these number of bits: {[2,4,8,16].map(newDimension =>
+              <button
+                key={newDimension}
+                onClick={e => this.generateNewData(newDimension*newDimension)}
+              >
+                {newDimension*newDimension}
+              </button>
+            )}
+          </div>
+          <div>or</div>
+          <div>
+            Enter a custom number of bits <input type="number" value={this.state.numberBits} onChange={e => this.generateNewData(parseInt(e.target.value))}/>
+          </div>
         </div>
 
         <div>
-          Efficiency: {numBits - numParityBits}/{numBits} = {(100*efficiency).toFixed(2)}%
+          Efficiency: {data.length - numParityBits}/{data.length} = {(100*efficiency).toFixed(2)}%
         </div>
 
         <div>
@@ -103,8 +127,8 @@ class App extends React.Component<{},AppState> {
         </div>
 
         <div id="bitsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})} style={{
-          height: bitHeight * dimension,
-          width: bitWidth * dimension,
+          height: bitHeight * numRows,
+          width: bitWidth * numColumns,
         }}>
           {data.map((bit, bitIndex) =>
             <Bit

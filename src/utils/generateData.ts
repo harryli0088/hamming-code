@@ -1,14 +1,14 @@
 import getCorrectParityBitValues from "utils/getCorrectParityBitValues"
 
 /**
- * given a power of 2 as the number of columns, generate a valid data array
- * @param  dimension dimension of the square
- * @return           2d data array
+ * given a number of bits, generate a valid data array
+ * @param  numberBits number of bits
+ * @return            2d data array
  */
-export default function generateData(bits:number):number[] {
+export default function generateData(numberBits:number):number[] {
   const data = []
 
-  while(data.length < bits) { //while we do not have enough rows
+  while(data.length < numberBits) { //while we do not have enough rows
     data.push(Math.random()>0.5 ? 1 : 0) //push the bit
   }
 

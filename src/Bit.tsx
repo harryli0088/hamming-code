@@ -7,11 +7,12 @@ import "./bit.scss"
 interface BitProps {
   bit: number,
   bitIndex: number,
-  dimension: number,
   errorIndex: number,
   height: number,
   isCell: boolean,
   mousedOverBitIndex:number,
+  numColumns: number,
+  numRows: number,
   onClickBit: Function,
   onMouseOverBit: Function,
   paddedBinaryLength: number,
@@ -97,9 +98,10 @@ class Bit extends React.Component<BitProps,{}> {
     const {
       bit,
       bitIndex,
-      dimension,
       height,
       isCell,
+      numRows,
+      numColumns,
       onClickBit,
       onMouseOverBit,
       paddedBinaryLength,
@@ -119,8 +121,8 @@ class Bit extends React.Component<BitProps,{}> {
           onMouseOver={e => onMouseOverBit(bitIndex)}
           style={{
             height: height - 2,
-            left: (100 * (bitIndex % dimension) / dimension).toString()+"%", //TODO memoize this
-            top: (100 * Math.floor(bitIndex/dimension) / dimension).toString()+"%",
+            left: (100 * (bitIndex % numColumns) / numColumns).toString()+"%", //TODO memoize this
+            top: (100 * Math.floor(bitIndex/numColumns) / numRows).toString()+"%",
             width: width - 2,
           }}
         >
