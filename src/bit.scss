@@ -13,6 +13,10 @@
 .cell {
   position: absolute;
   border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
 
   .value {
@@ -21,9 +25,10 @@
 
   .bitIndex {
     position: absolute;
-    bottom: -1px;
-    right: -1px;
-    border: 1px solid black;
+    top: 0;
+    left: 0;
+    padding: 0.1em;
+    color: gray;
   }
 }
 
@@ -40,6 +45,10 @@
 }
 .errorBit {
   background-color: red;
+
+  .bitIndex {
+    color: #444;
+  }
 }
 .parityBit {
   background-color: #82E0AA;
