@@ -1,21 +1,24 @@
 $sidebar-width: 400px;
+$standard-border: 1px solid gray;
 
 #App {
   overflow: auto;
 
   header {
-    border-bottom: 1px solid gray;
+    border-bottom: $standard-border;
     padding: 1em;
+    padding-top: 0;
   }
 
   #content {
     display: flex;
-    height: 60vh;
+    height: 100vh;
     overflow: hidden;
+    border-bottom: $standard-border;
 
     #sidebar {
       width: calc(#{$sidebar-width} - 1px);
-      border-right: 1px solid gray;
+      border-right: $standard-border;
       padding: 1em;
 
       .floatRight {
@@ -33,14 +36,17 @@ $sidebar-width: 400px;
       }
 
       #rawMessageContainer {
-        border: 1px solid black
+        border: $standard-border;
       }
     }
   }
 
+  #video {
+    text-align: center;
+  }
 
   footer {
     padding: 0.5em;
-    border-top: 1px solid gray;
+    border-top: $standard-border;
   }
 }

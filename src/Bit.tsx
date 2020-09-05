@@ -25,7 +25,6 @@ class Bit extends React.Component<BitProps,{}> {
     const {
       bitIndex,
       errorIndex,
-      mousedOverBitIndex,
     } = this.props
 
     if(bitIndex === 0) { //if this is the 0th cell
@@ -44,16 +43,16 @@ class Bit extends React.Component<BitProps,{}> {
 
       return "colorParityBit"
     }
-    else if( //if the moused over cell is a parity bit for this cell
-      mousedOverBitIndex>=0 //there is a cell being moused over
-      && isPowerOf2(mousedOverBitIndex) //the moused over cell is a parity bit
-      && bitIndex & mousedOverBitIndex //the ANDed bitwise operation produces a number
-    ) {
-      return "colorRegular" //return "coveredByParityBit"
-    }
-    else if(bitIndex === mousedOverBitIndex) { //if this is the cell being moused over
-      return "colorMousedOver"
-    }
+    // else if( //if the moused over cell is a parity bit for this cell
+    //   mousedOverBitIndex>=0 //there is a cell being moused over
+    //   && isPowerOf2(mousedOverBitIndex) //the moused over cell is a parity bit
+    //   && bitIndex & mousedOverBitIndex //the ANDed bitwise operation produces a number
+    // ) {
+    //   return "colorRegular" //return "coveredByParityBit"
+    // }
+    // else if(bitIndex === mousedOverBitIndex) { //if this is the cell being moused over
+    //   return "colorMousedOver"
+    // }
 
     return "colorRegular"
   }
@@ -127,7 +126,7 @@ class Bit extends React.Component<BitProps,{}> {
           }}
         >
           <div className="value">{renderBit}</div>
-          <div>{showBinary ? dec2binPadded(bitIndex, paddedBinaryLength) : null}</div>
+          <div className="binaryBitIndex">{showBinary ? dec2binPadded(bitIndex, paddedBinaryLength) : null}</div>
           <div className="bitIndex">{bitIndex}</div>
         </div>
       )

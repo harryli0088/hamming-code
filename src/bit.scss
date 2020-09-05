@@ -21,12 +21,21 @@
 
   .value {
     font-size: 3em;
+    padding-bottom: 0.25em;
+  }
+
+  .binaryBitIndex {
+    position: absolute;
+    bottom: 0.1em;
+    left: 50%;
+    transform: translateX(-50%);
+    color: gray;
   }
 
   .bitIndex {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 0.1em;
     padding: 0.1em;
     color: gray;
   }
@@ -46,15 +55,12 @@
 .colorErrorBit {
   background-color: red;
 
-  .bitIndex {
+  .bitIndex, .binaryBitIndex {
     color: #444;
   }
 }
 .colorParityBit {
   background-color: #82E0AA;
-}
-.colorMousedOver {
-  background-color: #ddd;
 }
 .colorRegular {
   background-color: white;

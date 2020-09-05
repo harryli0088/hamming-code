@@ -32,7 +32,7 @@ class App extends React.Component<{},AppState> {
     }
   }
 
-  rectifyIncorrectBit = (errorIndex: number) => {
+  swapIncorrectBit = (errorIndex: number) => {
     if(errorIndex > 0) { //if this is a bit to switch
       this.switchBit(errorIndex)
     }
@@ -62,7 +62,7 @@ class App extends React.Component<{},AppState> {
       }
       else if(isPowerOf2(mousedOverBitIndex)) { //the moused over bit is a parity bit
         returnArray.push(
-          <span>It covers all bits with a 1 in binary position {Math.log(mousedOverBitIndex)/Math.log(2) + 1}</span>
+          <span>It tracks all bits with a 1 in binary position {Math.log(mousedOverBitIndex)/Math.log(2) + 1}</span>
         )
       }
       else { //else this is a regular bit. find it's parity bits
@@ -74,7 +74,7 @@ class App extends React.Component<{},AppState> {
           ) {
             returnArray.push(
               <span>
-                It is covered by parity bit number {bitIndex}
+                It is tracked by parity bit {bitIndex}
                 <span className="floatRight">(binary {dec2binPadded(bitIndex, paddedBinaryLength)})</span>
               </span>
             )
@@ -85,7 +85,7 @@ class App extends React.Component<{},AppState> {
       return returnArray.map((element, index) => <div key={index}>{element}</div>)
     }
 
-    return "Hover over a bit!"
+    return "Hover over a bit to learn more!"
   }
 
   onMouseOverBit = (bitIndex: number) => this.setState({mousedOverBitIndex:bitIndex})
@@ -117,7 +117,7 @@ class App extends React.Component<{},AppState> {
     const numRows = Math.ceil(data.length/numColumns)
     const paddedBinaryLength = Math.ceil(Math.log(data.length)/Math.log(2))
 
-    const numParityBits = Math.ceil(Math.log(data.length)/Math.log(2))
+    const numParityBits = Math.ceil(Math.log(data.length)/Math.log(2)) + 1
     const efficiency = (data.length - numParityBits) / data.length
 
     const sharedBitProps = {
@@ -136,11 +136,14 @@ class App extends React.Component<{},AppState> {
     return (
       <div id="App">
         <header>
-          <h1>Hamming Codes</h1>
-          <div>Description...</div>
+          <h1>Hamming Code</h1>
+          <div><i>Detecting and correcting 1-bit errors</i></div>
+          <br/>
+          <div>Computers represent data digitally as 1s and 0s, called 'bits'. Sometimes these bits are mistakenly swapped, for example a message garbled in transit between computers or a scratched CD. Invented in 1950 by Richard Hamming, Hamming Code can correct 1-bit errors and detect 2-bit errors, making data transfer and saving more resilient.</div>
+          <div>A <span className="colorParityBit">&nbsp;<strong>parity bit</strong>&nbsp;</span> is a single bit that tracks whether the number of 1's is odd or even. If the number of 1's is odd, the parity bit is 1; if the number of 1's is even, the parity bit is 0. Hamming cleverly arranged parity bits to track certain rows or columns, so that you will be able to correct 1-bit errors and detect 2-bit errors. In this example, you need {numParityBits} parity bits to track {data.length - numParityBits} bits of data. Generally, the longer the message, the more efficient the Hamming Code become. The longer the message, however, the more likely the chance of bit errors, rendering Hamming Code insufficient since it cannot detect 3 or more errors.</div>
         </header>
 
-        <div id="content">
+        <section id="content">
           <div id="sidebar">
             <div>
               <div>Generate new data for these number of bits:</div>
@@ -156,7 +159,7 @@ class App extends React.Component<{},AppState> {
               </div>
               <div>- or -</div>
               <div>
-                Enter a custom number of bits <input type="number" value={this.state.numberBits} onChange={e => this.generateNewData(parseInt(e.target.value))}/>
+                Enter a custom number of bits <input type="number" step="1" min="1" value={this.state.numberBits} onChange={e => this.generateNewData(parseInt(e.target.value))}/>
               </div>
             </div>
 
@@ -167,25 +170,26 @@ class App extends React.Component<{},AppState> {
             </div>
 
             <div>
-              Show Binary <input type="checkbox" checked={showBinary} onChange={e => this.setState({showBinary:!showBinary})}/>
+              Show Binary Position <input type="checkbox" checked={showBinary} onChange={e => this.setState({showBinary:!showBinary})}/>
             </div>
 
             <hr/>
-
-            <div>
-              <button
-                onClick={e => this.rectifyIncorrectBit(errorIndex)}
-                disabled={errorIndex === 0}
-              >
-                Rectify Incorrect Bit
-              </button>
-            </div>
-
-            <div>{this.getValidityStatus(errorIndex)}</div>
 
             <div>Click on a bit to swap its value</div>
 
+            <div>{this.getValidityStatus(errorIndex)}</div>
+
+            <div>
+              <button
+                onClick={e => this.swapIncorrectBit(errorIndex)}
+                disabled={errorIndex === 0}
+              >
+                Swap Incorrect Bit
+              </button>
+            </div>
+
             <hr/>
+
 
             <div>{this.getMousedOverText(paddedBinaryLength)}</div>
           </div>
@@ -227,15 +231,22 @@ class App extends React.Component<{},AppState> {
               </span>
             </div>
           </div>
-        </div>
+        </section>
+
+        <section id="video">
+          <h2>3Blue1Brown's Explanation</h2>
+          <iframe title="3blue1brown" width="560" height="315" src="https://www.youtube.com/embed/X8jsijhllIA" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+        </section>
 
         <footer>
+          <div>Thank you to 3Blue1Brown for the inspiration and explanation!</div>
+
           <div>
-            Inspired by 3Blue1Brown: <a href="https://www.youtube.com/watch?v=X8jsijhllIA" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=X8jsijhllIA</a>
+            Read more about Hamming Code: <a href="https://en.wikipedia.org/wiki/Hamming_code" target="_blank" rel="noopener noreferrer">https://en.wikipedia.org/wiki/Hamming_code</a>
           </div>
 
           <div>
-            Wikipedia: <a href="https://en.wikipedia.org/wiki/Hamming_code" target="_blank" rel="noopener noreferrer">https://en.wikipedia.org/wiki/Hamming_code</a>
+            Read more about error-correcting code: <a href="https://en.wikipedia.org/wiki/Linear_code" target="_blank" rel="noopener noreferrer">https://en.wikipedia.org/wiki/Linear_code</a>
           </div>
         </footer>
       </div>
