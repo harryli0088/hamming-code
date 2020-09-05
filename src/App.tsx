@@ -20,7 +20,7 @@ class App extends React.Component<{},AppState> {
     this.state = {
       bitHeight: 100,
       bitWidth: 100,
-      data: generateData(4),
+      data: generateData(16),
       mousedOverBitIndex: -1,
       showBinary: true,
     }
@@ -81,7 +81,7 @@ class App extends React.Component<{},AppState> {
         <h1>Hamming Codes</h1>
 
         <div>
-          Number of bits: {[2,4,8,16].map(newDimension => <button key={newDimension} onClick={e => this.setState({data: generateData(newDimension)})}>{newDimension*newDimension-1}</button>)}
+          Number of bits: {[2,4,8,16].map(newDimension => <button key={newDimension} onClick={e => this.setState({data: generateData(newDimension*newDimension)})}>{newDimension*newDimension-1}</button>)}
         </div>
 
         <div>
