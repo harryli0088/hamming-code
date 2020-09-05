@@ -12,6 +12,7 @@ interface BitProps {
   height: number,
   isCell: boolean,
   mousedOverBitIndex:number,
+  onClickBit: Function,
   onMouseOverBit: Function,
   showBinary: boolean,
   width: number,
@@ -54,23 +55,29 @@ class Bit extends React.Component<BitProps,{}> {
       height,
       isCell,
       mousedOverBitIndex,
+      onClickBit,
       onMouseOverBit,
       showBinary,
       width,
     } = this.props
 
-    const color = this.getColor(bitIndex, mousedOverBitIndex)
+    const backgroundColor = this.getColor(bitIndex, mousedOverBitIndex)
     const renderBit = bitIndex>0 ? bit : "-"
 
     if(isCell) {
       return (
-        <div className="cell" style={{
-          backgroundColor: color,
-          height: height - 2,
-          left: (100 * (bitIndex % dimension) / dimension).toString()+"%", //TODO memoize this
-          top: (100 * Math.floor(bitIndex/dimension) / dimension).toString()+"%",
-          width: width - 2,
-        }} onMouseOver={e => onMouseOverBit(bitIndex)}>
+        <div
+          className="cell"
+          onClick={e => onClickBit(bitIndex)}
+          onMouseOver={e => onMouseOverBit(bitIndex)}
+          style={{
+            backgroundColor,
+            height: height - 2,
+            left: (100 * (bitIndex % dimension) / dimension).toString()+"%", //TODO memoize this
+            top: (100 * Math.floor(bitIndex/dimension) / dimension).toString()+"%",
+            width: width - 2,
+          }}
+        >
           <div className="value">{renderBit}</div>
           <div>{showBinary ? dec2binPadded(bitIndex, dimension) : null}</div>
           <div className="bitIndex">{bitIndex}</div>
@@ -79,7 +86,14 @@ class Bit extends React.Component<BitProps,{}> {
     }
 
     return (
-      <span className="messageBit" style={{backgroundColor:color}}>{renderBit}</span>
+      <span
+        className="messageBit"
+        onClick={e => onClickBit(bitIndex)}
+        onMouseOver={e => onMouseOverBit(bitIndex)}
+        style={{backgroundColor}}
+      >
+        {renderBit}
+      </span>
     )
   }
 }

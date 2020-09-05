@@ -25,6 +25,12 @@ class App extends React.Component<{},AppState> {
     }
   }
 
+  onClickBit = (bitIndex: number) => {
+    const dataCopy = this.state.data.slice()
+    dataCopy[bitIndex] = dataCopy[bitIndex]>0 ? 0 : 1 //switch the bit
+    this.setState({data: dataCopy})
+  }
+
   getMousedOverText = () => {
     if(this.state.mousedOverBitIndex >= 0) {
       return `You are hovering over cell ${this.state.mousedOverBitIndex}`
@@ -33,7 +39,7 @@ class App extends React.Component<{},AppState> {
     return "Hover over a cell!"
   }
 
-  onMouseOverBit = (cellIndex: number) => this.setState({mousedOverBitIndex:cellIndex})
+  onMouseOverBit = (bitIndex: number) => this.setState({mousedOverBitIndex:bitIndex})
 
   render() {
     const {
@@ -62,26 +68,7 @@ class App extends React.Component<{},AppState> {
           Efficiency: {numBits - numParityBits}/{numBits} = {(100*efficiency).toFixed(2)}%
         </div>
 
-        <div>
-          Raw Message: <span id="rawMessageContainer">
-            {data.map((bit, bitIndex) =>
-              <Bit
-                key={bitIndex}
-
-                bit={bit}
-                bitIndex={bitIndex}
-                data={data}
-                dimension={dimension}
-                height={bitHeight}
-                isCell={false}
-                mousedOverBitIndex={mousedOverBitIndex}
-                onMouseOverBit={this.onMouseOverBit}
-                showBinary={showBinary}
-                width={bitWidth}
-              />
-            )}
-          </span>
-        </div>
+        <div><button>Correct Parity Bits</button></div>
 
         <div>
           Show Binary <input type="checkbox" checked={showBinary} onChange={e => this.setState({showBinary:!showBinary})}/>
@@ -102,6 +89,7 @@ class App extends React.Component<{},AppState> {
               height={bitHeight}
               isCell
               mousedOverBitIndex={mousedOverBitIndex}
+              onClickBit={this.onClickBit}
               onMouseOverBit={this.onMouseOverBit}
               showBinary={showBinary}
               width={bitWidth}
@@ -109,8 +97,34 @@ class App extends React.Component<{},AppState> {
           )}
         </div>
 
-        <div>{this.getMousedOverText()}</div>
+        <br/>
 
+        <div>
+          Message:
+          <br/>
+          <span id="rawMessageContainer">
+            {data.map((bit, bitIndex) =>
+              <Bit
+                key={bitIndex}
+
+                bit={bit}
+                bitIndex={bitIndex}
+                data={data}
+                dimension={dimension}
+                height={bitHeight}
+                isCell={false}
+                mousedOverBitIndex={mousedOverBitIndex}
+                onClickBit={this.onClickBit}
+                onMouseOverBit={this.onMouseOverBit}
+                showBinary={showBinary}
+                width={bitWidth}
+              />
+            )}
+          </span>
+        </div>
+
+
+        <div>{this.getMousedOverText()}</div>
       </div>
     );
   }
