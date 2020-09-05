@@ -15,6 +15,7 @@ interface BitProps {
   mousedOverBitIndex:number,
   onClickBit: Function,
   onMouseOverBit: Function,
+  paddedBinaryLength: number,
   showBinary: boolean,
   width: number,
 }
@@ -104,6 +105,7 @@ class Bit extends React.Component<BitProps,{}> {
       isCell,
       onClickBit,
       onMouseOverBit,
+      paddedBinaryLength,
       showBinary,
       width,
     } = this.props
@@ -126,7 +128,7 @@ class Bit extends React.Component<BitProps,{}> {
           }}
         >
           <div className="value">{renderBit}</div>
-          <div>{showBinary ? dec2binPadded(bitIndex, dimension) : null}</div>
+          <div>{showBinary ? dec2binPadded(bitIndex, paddedBinaryLength) : null}</div>
           <div className="bitIndex">{bitIndex}</div>
         </div>
       )

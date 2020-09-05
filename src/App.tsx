@@ -64,6 +64,19 @@ class App extends React.Component<{},AppState> {
     const numParityBits = Math.ceil(Math.log(numBits)/Math.log(2))
     const efficiency = (numBits - numParityBits) / numBits
 
+    const sharedBitProps = {
+      data,
+      dimension,
+      errorIndex,
+      height: bitHeight,
+      mousedOverBitIndex,
+      onClickBit: this.switchBit,
+      onMouseOverBit: this.onMouseOverBit,
+      paddedBinaryLength: Math.ceil(Math.log(data.length)/Math.log(2)),
+      showBinary,
+      width: bitWidth,
+    }
+
     return (
       <div>
         <h1>Hamming Codes</h1>
@@ -100,16 +113,9 @@ class App extends React.Component<{},AppState> {
 
               bit={bit}
               bitIndex={bitIndex}
-              data={data}
-              dimension={dimension}
-              errorIndex={errorIndex}
-              height={bitHeight}
-              isCell
-              mousedOverBitIndex={mousedOverBitIndex}
-              onClickBit={this.switchBit}
-              onMouseOverBit={this.onMouseOverBit}
-              showBinary={showBinary}
-              width={bitWidth}
+              isCell={true}
+
+              {...sharedBitProps}
             />
           )}
         </div>
@@ -126,16 +132,9 @@ class App extends React.Component<{},AppState> {
 
                 bit={bit}
                 bitIndex={bitIndex}
-                data={data}
-                dimension={dimension}
-                errorIndex={errorIndex}
-                height={bitHeight}
                 isCell={false}
-                mousedOverBitIndex={mousedOverBitIndex}
-                onClickBit={this.switchBit}
-                onMouseOverBit={this.onMouseOverBit}
-                showBinary={showBinary}
-                width={bitWidth}
+
+                {...sharedBitProps}
               />
             )}
           </span>
