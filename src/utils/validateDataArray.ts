@@ -1,4 +1,3 @@
-import getCorrectParityBitValues from "utils/getCorrectParityBitValues"
 import zeroOrOne from "utils/zeroOrOne"
 
 /**
@@ -9,11 +8,9 @@ import zeroOrOne from "utils/zeroOrOne"
 export default function validateDataArray(data:number[]):number {
   let errorIndex = 0
 
-  getCorrectParityBitValues(data).forEach((value, powerOf2) => {
-    const parityBitIndex = Math.pow(2, powerOf2)
-
-    if(value !== zeroOrOne(data[parityBitIndex])) {
-      errorIndex +=  parityBitIndex //increment by the parity bits index
+  data.forEach((bit, bitIndex) => {
+    if(zeroOrOne(bit) === 1) { //if this bit is one
+      errorIndex = errorIndex ^ bitIndex //XOR the bit index
     }
   })
 

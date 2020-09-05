@@ -7,7 +7,6 @@ import "./bit.scss"
 interface BitProps {
   bit: number,
   bitIndex: number,
-  data: number[],
   dimension: number,
   errorIndex: number,
   height: number,
@@ -61,7 +60,6 @@ class Bit extends React.Component<BitProps,{}> {
   getOpacityClassName = () => {
     const {
       bitIndex,
-      errorIndex,
       mousedOverBitIndex,
     } = this.props
 
@@ -99,7 +97,6 @@ class Bit extends React.Component<BitProps,{}> {
     const {
       bit,
       bitIndex,
-      data,
       dimension,
       height,
       isCell,

@@ -65,7 +65,6 @@ class App extends React.Component<{},AppState> {
     const efficiency = (numBits - numParityBits) / numBits
 
     const sharedBitProps = {
-      data,
       dimension,
       errorIndex,
       height: bitHeight,
@@ -142,6 +141,14 @@ class App extends React.Component<{},AppState> {
 
 
         <div>{this.getMousedOverText()}</div>
+
+        <div>
+          Inspired by 3Blue1Brown: <a href="https://www.youtube.com/watch?v=X8jsijhllIA" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=X8jsijhllIA</a>
+        </div>
+
+        <div>
+          Wikipedia: <a href="https://en.wikipedia.org/wiki/Hamming_code" target="_blank" rel="noopener noreferrer">https://en.wikipedia.org/wiki/Hamming_code</a>
+        </div>
       </div>
     );
   }

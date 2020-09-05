@@ -11,9 +11,6 @@ it('generates the right 2d data array', () => {
       data.forEach(cell => {
         expect(cell===1 || cell===0).toEqual(true)
       })
-      if(validateDataArray(data) !== 0) {
-        console.log(data)
-      }
       expect(validateDataArray(data)).toEqual(0)
     }
   })
