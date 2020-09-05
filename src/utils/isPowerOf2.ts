@@ -4,7 +4,7 @@
  * @param  num input number
  * @return     true/false whether the number is a power of 2
  */
-export default function powerOf2(num:number) {
+export default function isPowerOf2(num:number) {
   if(num === 0) {
     return false
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import dec2binPadded from "utils/dec2binPadded"
-import powerOf2 from "utils/powerOf2"
+import isPowerOf2 from "utils/isPowerOf2"
 import "./bit.scss"
 
 interface BitProps {
@@ -21,7 +21,7 @@ class Bit extends React.Component<BitProps,{}> {
     if(bitIndex === 0) { //if this is the 0th cell
       return "orange"
     }
-    else if(powerOf2(bitIndex)) { //if this is a parity bit
+    else if(isPowerOf2(bitIndex)) { //if this is a parity bit
       if( //if this is a parity bit for the moused over cell
         mousedOverBitIndex>=0
         && bitIndex & mousedOverBitIndex
@@ -32,7 +32,7 @@ class Bit extends React.Component<BitProps,{}> {
     }
     else if( //if the moused over cell is a parity bit for this cell
       mousedOverBitIndex>=0 //there is a cell being moused over
-      && powerOf2(mousedOverBitIndex) //the moused over cell is a parity bit
+      && isPowerOf2(mousedOverBitIndex) //the moused over cell is a parity bit
       && bitIndex & mousedOverBitIndex //the ANDed bitwise operation produces a number
     )
        {
