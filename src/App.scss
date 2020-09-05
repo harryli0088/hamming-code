@@ -1,7 +1,46 @@
-#bitsContainer {
-  position: relative;
-}
+$sidebar-width: 400px;
 
-#rawMessageContainer {
-  border: 1px solid black
+#App {
+  overflow: auto;
+
+  header {
+    border-bottom: 1px solid gray;
+    padding: 1em;
+  }
+
+  #content {
+    display: flex;
+    height: 60vh;
+    overflow: hidden;
+
+    #sidebar {
+      width: calc(#{$sidebar-width} - 1px);
+      border-right: 1px solid gray;
+      padding: 1em;
+
+      .floatRight {
+        float: right;
+      }
+    }
+
+    #data {
+      background: #eee;
+      width: calc(100% - #{$sidebar-width});
+      overflow: auto;
+
+      #bitsContainer {
+        position: relative;
+      }
+
+      #rawMessageContainer {
+        border: 1px solid black
+      }
+    }
+  }
+
+
+  footer {
+    padding: 0.5em;
+    border-top: 1px solid gray;
+  }
 }

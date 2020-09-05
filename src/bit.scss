@@ -40,21 +40,24 @@
   cursor: pointer;
 }
 
-.zeroBit {
+.colorZerothBit {
   background-color: gray;
 }
-.errorBit {
+.colorErrorBit {
   background-color: red;
 
   .bitIndex {
     color: #444;
   }
 }
-.parityBit {
+.colorParityBit {
   background-color: #82E0AA;
 }
-.mousedOver {
+.colorMousedOver {
   background-color: #ddd;
+}
+.colorRegular {
+  background-color: white;
 }
 
 .opacityDimmed {
