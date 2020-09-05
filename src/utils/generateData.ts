@@ -3,16 +3,13 @@
  * @param  dimension dimension of the square
  * @return           2d data array
  */
-export default function generateData(dimension:number):number[][] {
+export default function generateData(dimension:number):number[] {
   const data = []
 
-  while(data.length < dimension) { //while we do not have enough rows
-    const row = [] //create an empty row
-    while(row.length < dimension) { //while we do not have enough columns
-      row.push(Math.random()>0.5 ? 1 : 0) //push a random 0 or 1
-    }
+  const bits = dimension * dimension
 
-    data.push(row) //push the row
+  while(data.length < bits) { //while we do not have enough rows
+    data.push(Math.random()>0.5 ? 1 : 0) //push the bit
   }
 
   return data

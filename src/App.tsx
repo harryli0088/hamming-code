@@ -1,12 +1,14 @@
 import React from 'react';
 
-import Cell from "Cell"
+import Bit from "Bit"
 import generateData from "utils/generateData"
 import './App.scss';
 
 interface AppState {
-  data: number[][],
-  mousedOverCellIndex: number,
+  bitHeight: number,
+  bitWidth: number,
+  data: number[],
+  mousedOverBitIndex: number,
   showBinary: boolean,
 }
 
@@ -15,64 +17,67 @@ class App extends React.Component<{},AppState> {
     super(props)
 
     this.state = {
+      bitHeight: 100,
+      bitWidth: 100,
       data: generateData(4),
-      mousedOverCellIndex: -1,
+      mousedOverBitIndex: -1,
       showBinary: true,
     }
   }
 
   getMousedOverText = () => {
-    if(this.state.mousedOverCellIndex >= 0) {
-      return `You are hovering over cell ${this.state.mousedOverCellIndex}`
+    if(this.state.mousedOverBitIndex >= 0) {
+      return `You are hovering over cell ${this.state.mousedOverBitIndex}`
     }
 
     return "Hover over a cell!"
   }
 
-  onMouseOverCell = (cellIndex: number) => this.setState({mousedOverCellIndex:cellIndex})
+  onMouseOverBit = (cellIndex: number) => this.setState({mousedOverBitIndex:cellIndex})
 
   render() {
     const {
+      bitHeight,
+      bitWidth,
       data,
-      mousedOverCellIndex,
+      mousedOverBitIndex,
       showBinary,
     } = this.state
+
+    const dimension = Math.sqrt(data.length)
 
     return (
       <div>
         <h1>Hamming Codes</h1>
 
         <div>
-          Number of bits: {[2,4,8].map(dimension => <button onClick={e => this.setState({data: generateData(dimension)})}>{dimension*dimension}</button>)}
+          Number of bits: {[2,4,8].map(newDimension => <button onClick={e => this.setState({data: generateData(newDimension)})}>{newDimension*newDimension}</button>)}
         </div>
 
         <div>
           Show Binary <input type="checkbox" checked={showBinary} onChange={e => this.setState({showBinary:!showBinary})}/>
         </div>
 
-        <table onMouseLeave={e => this.setState({mousedOverCellIndex:-1})}>
-          <tbody>
-            {data.map((row, rowIndex) =>
-              <tr key={rowIndex}>
-                {row.map((value, columnIndex) =>
-                  <td key={columnIndex}>
-                    <Cell
-                      key={columnIndex}
+        <div id="bitsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})} style={{
+          height: bitHeight * dimension,
+          width: bitWidth * dimension,
+        }}>
+          {data.map((bit, bitIndex) =>
+            <Bit
+              key={bitIndex}
 
-                      columnIndex={columnIndex}
-                      data={data}
-                      mousedOverCellIndex={mousedOverCellIndex}
-                      onMouseOverCell={this.onMouseOverCell}
-                      rowIndex={rowIndex}
-                      showBinary={showBinary}
-                      value={value}
-                    />
-                  </td>
-                )}
-              </tr>
-            )}
-          </tbody>
-        </table>
+              bit={bit}
+              bitIndex={bitIndex}
+              data={data}
+              dimension={dimension}
+              height={bitHeight}
+              mousedOverBitIndex={mousedOverBitIndex}
+              onMouseOverBit={this.onMouseOverBit}
+              showBinary={showBinary}
+              width={bitWidth}
+            />
+          )}
+        </div>
 
         <div>{this.getMousedOverText()}</div>
 
