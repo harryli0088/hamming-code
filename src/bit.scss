@@ -1,4 +1,4 @@
-.bit {
+.cell {
   text-align: center;
   position: absolute;
   border: 2px solid black;
@@ -13,4 +13,11 @@
     right: -1px;
     border: 1px solid black;
   }
+}
+
+.messageBit {
+  font-weight: bold;
+  width: 1em;
+  display: inline-block;
+  text-align: center;
 }

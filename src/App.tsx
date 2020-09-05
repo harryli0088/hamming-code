@@ -48,6 +48,7 @@ class App extends React.Component<{},AppState> {
 
     const numBits = data.length - 1
     const numParityBits = Math.ceil(Math.log(numBits)/Math.log(2))
+    const efficiency = (numBits - numParityBits) / numBits
 
     return (
       <div>
@@ -58,7 +59,28 @@ class App extends React.Component<{},AppState> {
         </div>
 
         <div>
-          Efficiency: {numBits - numParityBits}/{numBits} = {(100*(numBits- numParityBits)/numBits).toFixed(2)}%
+          Efficiency: {numBits - numParityBits}/{numBits} = {(100*efficiency).toFixed(2)}%
+        </div>
+
+        <div>
+          Raw Message: <span id="rawMessageContainer">
+            {data.map((bit, bitIndex) =>
+              <Bit
+                key={bitIndex}
+
+                bit={bit}
+                bitIndex={bitIndex}
+                data={data}
+                dimension={dimension}
+                height={bitHeight}
+                isCell={false}
+                mousedOverBitIndex={mousedOverBitIndex}
+                onMouseOverBit={this.onMouseOverBit}
+                showBinary={showBinary}
+                width={bitWidth}
+              />
+            )}
+          </span>
         </div>
 
         <div>
@@ -78,6 +100,7 @@ class App extends React.Component<{},AppState> {
               data={data}
               dimension={dimension}
               height={bitHeight}
+              isCell
               mousedOverBitIndex={mousedOverBitIndex}
               onMouseOverBit={this.onMouseOverBit}
               showBinary={showBinary}

@@ -10,6 +10,7 @@ interface BitProps {
   data: number[],
   dimension: number,
   height: number,
+  isCell: boolean,
   mousedOverBitIndex:number,
   onMouseOverBit: Function,
   showBinary: boolean,
@@ -51,24 +52,34 @@ class Bit extends React.Component<BitProps,{}> {
       data,
       dimension,
       height,
+      isCell,
       mousedOverBitIndex,
       onMouseOverBit,
       showBinary,
       width,
     } = this.props
 
+    const color = this.getColor(bitIndex, mousedOverBitIndex)
+    const renderBit = bitIndex>0 ? bit : "-"
+
+    if(isCell) {
+      return (
+        <div className="cell" style={{
+          backgroundColor: color,
+          height: height - 2,
+          left: (100 * (bitIndex % dimension) / dimension).toString()+"%", //TODO memoize this
+          top: (100 * Math.floor(bitIndex/dimension) / dimension).toString()+"%",
+          width: width - 2,
+        }} onMouseOver={e => onMouseOverBit(bitIndex)}>
+          <div className="value">{renderBit}</div>
+          <div>{showBinary ? dec2binPadded(bitIndex, dimension) : null}</div>
+          <div className="bitIndex">{bitIndex}</div>
+        </div>
+      )
+    }
+
     return (
-      <div className="bit" style={{
-        backgroundColor: this.getColor(bitIndex, mousedOverBitIndex),
-        height: height - 2,
-        left: (100 * (bitIndex % dimension) / dimension).toString()+"%", //TODO memoize this
-        top: (100 * Math.floor(bitIndex/dimension) / dimension).toString()+"%",
-        width: width - 2,
-      }} onMouseOver={e => onMouseOverBit(bitIndex)}>
-        <div className="value">{bitIndex>0 ? bit : "-"}</div>
-        <div>{showBinary ? dec2binPadded(bitIndex, dimension) : null}</div>
-        <div className="bitIndex">{bitIndex}</div>
-      </div>
+      <span className="messageBit" style={{backgroundColor:color}}>{renderBit}</span>
     )
   }
 }
