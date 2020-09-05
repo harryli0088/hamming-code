@@ -46,12 +46,19 @@ class App extends React.Component<{},AppState> {
 
     const dimension = Math.sqrt(data.length)
 
+    const numBits = data.length - 1
+    const numParityBits = Math.ceil(Math.log(numBits)/Math.log(2))
+
     return (
       <div>
         <h1>Hamming Codes</h1>
 
         <div>
-          Number of bits: {[2,4,8].map(newDimension => <button onClick={e => this.setState({data: generateData(newDimension)})}>{newDimension*newDimension}</button>)}
+          Number of bits: {[2,4,8,16].map(newDimension => <button onClick={e => this.setState({data: generateData(newDimension)})}>{newDimension*newDimension-1}</button>)}
+        </div>
+
+        <div>
+          Efficiency: {numBits - numParityBits}/{numBits} = {(100*(numBits- numParityBits)/numBits).toFixed(2)}%
         </div>
 
         <div>

@@ -19,7 +19,7 @@ interface BitProps {
 class Bit extends React.Component<BitProps,{}> {
   getColor = (bitIndex:number, mousedOverBitIndex:number) => {
     if(bitIndex === 0) { //if this is the 0th cell
-      return "orange"
+      return "gray"
     }
     else if(isPowerOf2(bitIndex)) { //if this is a parity bit
       if( //if this is a parity bit for the moused over cell
@@ -65,7 +65,7 @@ class Bit extends React.Component<BitProps,{}> {
         top: (100 * Math.floor(bitIndex/dimension) / dimension).toString()+"%",
         width: width - 2,
       }} onMouseOver={e => onMouseOverBit(bitIndex)}>
-        <div className="value">{bit}</div>
+        <div className="value">{bitIndex>0 ? bit : "-"}</div>
         <div>{showBinary ? dec2binPadded(bitIndex, dimension) : null}</div>
         <div className="bitIndex">{bitIndex}</div>
       </div>
