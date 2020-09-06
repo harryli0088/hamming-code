@@ -118,17 +118,17 @@ class App extends React.Component<{},AppState> {
     numberBits,
   })
 
-  getValidityStatus = (doubleError:boolean, errorIndex:number) => {
-    //if we have a 2-bit error
-    if(doubleError) {
-      return `There is 2-bit error. SECDED Hamming Code by itself cannot determine which bits were flipped.`
-    }
-    else if(errorIndex > 0) { //if there is a 1-bit error
-      return `There is a 1-bit error with bit ${errorIndex}! Swap it's value to fix the error.`
-    }
-
-    return "There is no error in the message."
-  }
+  // getValidityStatus = (doubleError:boolean, errorIndex:number) => {
+  //   //if we have a 2-bit error
+  //   if(doubleError) {
+  //     return `There is 2-bit error. SECDED Hamming Code by itself cannot determine which bits were flipped.`
+  //   }
+  //   else if(errorIndex > 0) { //if there is a 1-bit error
+  //     return `There is a 1-bit error with bit ${errorIndex}! Swap it's value to fix the error.`
+  //   }
+  //
+  //   return "There is no error in the message."
+  // }
 
   getRegularParityBitsExplanation = (
     doubleError: boolean,
@@ -141,14 +141,14 @@ class App extends React.Component<{},AppState> {
       return (
         <React.Fragment>
           <div>This is what the values of the parity bits should be. Since the overall parity of the message is odd, this means that there is a 2-bit error!</div>
-          <div style={{display: "flex"}}>
-            {regularParityBits.map((parityBit) =>
+          <div className="regularParityBitsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})}>
+            {regularParityBits.map((regularParityBit) =>
               <Bit
-                key={parityBit.bitIndex}
+                key={regularParityBit.bitIndex}
 
                 absolutePositioned={false}
-                bit={parityBit.bitIndex&errorIndex ? 1 : 0}
-                bitIndex={parityBit.bitIndex}
+                bit={regularParityBit.bitIndex&errorIndex ? 1 : 0}
+                bitIndex={regularParityBit.bitIndex}
                 isCell={true}
 
                 {...sharedBitProps}
@@ -161,15 +161,15 @@ class App extends React.Component<{},AppState> {
     else if(errorIndex > 0) { //else if there is a single bit error
       return (
         <React.Fragment>
-          <div>This is what the values of the parity bits should be. Since the overall parity of the message is odd, this means that there is a 1-bit error in position {errorIndex} (binary {dec2binPadded(errorIndex, paddedBinaryLength)}). Note that the value of the parity bits is the position of the 1-bit error!</div>
-          <div style={{display: "flex"}}>
-            {regularParityBits.map((parityBit) =>
+          <div>This is what the values of the parity bits should be. Since the overall parity of the message is odd, this means that there is a 1-bit error in binary position {dec2binPadded(errorIndex, paddedBinaryLength)}, ie position {errorIndex}</div>
+          <div className="regularParityBitsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})}>
+            {regularParityBits.map((regularParityBit) =>
               <Bit
-                key={parityBit.bitIndex}
+                key={regularParityBit.bitIndex}
 
                 absolutePositioned={false}
-                bit={parityBit.bitIndex&errorIndex ? 1 : 0}
-                bitIndex={parityBit.bitIndex}
+                bit={regularParityBit.bitIndex&errorIndex ? 1 : 0}
+                bitIndex={regularParityBit.bitIndex}
                 isCell={true}
 
                 {...sharedBitProps}
@@ -262,9 +262,29 @@ class App extends React.Component<{},AppState> {
 
             <hr/>
 
-            <div>Click on a bit to swap its value</div>
+            <div>Current values of the parity bits</div>
+            <div className="regularParityBitsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})}>
+              {regularParityBits.map((parityBit) =>
+                <Bit
+                  key={parityBit.bitIndex}
 
-            <div>{this.getValidityStatus(doubleError, errorIndex)}</div>
+                  absolutePositioned={false}
+                  bit={parityBit.bit}
+                  bitIndex={parityBit.bitIndex}
+                  isCell={true}
+
+                  {...sharedBitProps}
+                />
+              )}
+            </div>
+
+            <br/>
+
+            {/* <div>{this.getValidityStatus(doubleError, errorIndex)}</div> */}
+
+            {this.getRegularParityBitsExplanation(doubleError, errorIndex, paddedBinaryLength, regularParityBits, sharedBitProps)}
+
+            <br/>
 
             <div>
               <button
@@ -277,12 +297,15 @@ class App extends React.Component<{},AppState> {
 
             <hr/>
 
-
             <div>{this.getMousedOverText(paddedBinaryLength)}</div>
           </div>
 
 
           <div id="data">
+            <div>Click on a bit to swap its value!</div>
+
+            <br/>
+
             <div id="bitsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})} style={{
               height: bitHeight * numRows,
               width: bitWidth * numColumns,
@@ -304,7 +327,7 @@ class App extends React.Component<{},AppState> {
             <br/>
 
             <div>
-              <span id="rawMessageContainer">
+              <span id="rawMessageContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})}>
                 {data.map((bit, bitIndex) =>
                   <Bit
                     key={bitIndex}
@@ -320,26 +343,6 @@ class App extends React.Component<{},AppState> {
               </span>
             </div>
           </div>
-        </section>
-
-        <section>
-          <div>Current values of the parity bits</div>
-          <div style={{display: "flex"}}>
-            {regularParityBits.map((parityBit) =>
-              <Bit
-                key={parityBit.bitIndex}
-
-                absolutePositioned={false}
-                bit={parityBit.bit}
-                bitIndex={parityBit.bitIndex}
-                isCell={true}
-
-                {...sharedBitProps}
-              />
-            )}
-          </div>
-
-          {this.getRegularParityBitsExplanation(doubleError, errorIndex, paddedBinaryLength, regularParityBits, sharedBitProps)}
         </section>
 
         <section id="video">

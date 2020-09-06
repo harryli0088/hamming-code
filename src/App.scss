@@ -1,4 +1,4 @@
-$sidebar-width: 400px;
+$sidebar-width: 500px;
 $standard-border: 1px solid gray;
 
 #App {
@@ -29,9 +29,14 @@ $standard-border: 1px solid gray;
       .floatRight {
         float: right;
       }
+
+      .regularParityBitsContainer {
+        display: flex;
+      }
     }
 
     #data {
+      padding: 1em;
       background: #eee;
       width: calc(100% - #{$sidebar-width});
       overflow: auto;
