@@ -14,6 +14,7 @@ it('generates the right 2d data array', () => {
       expect(validateDataArray(data)).toEqual({
         doubleError: false,
         errorIndex: 0,
+        parity: 0,
       })
 
       //expect the overall parity to be 0

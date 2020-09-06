@@ -52,7 +52,7 @@ class App extends React.Component<{},AppState> {
   }
 
   swapIncorrectBit = (doubleError:boolean, errorIndex: number) => {
-    if(errorIndex>0 && doubleError) { //if this is a 1-bit error to swap
+    if(errorIndex>0 && doubleError===false) { //if this is a 1-bit error to swap
       this.switchBit(errorIndex)
     }
   }
@@ -73,7 +73,8 @@ class App extends React.Component<{},AppState> {
         <span>
           You are hovering over bit {mousedOverBitIndex}
           <span className="floatRight">(binary {dec2binPadded(mousedOverBitIndex, paddedBinaryLength)})</span>
-        </span>
+        </span>,
+        <br/>
       ]
 
       if(mousedOverBitIndex === 0) {
@@ -353,7 +354,7 @@ class App extends React.Component<{},AppState> {
         <section>
           <h3>How to Arrange the Parity Bits</h3>
 
-          <div>In binary, powers-of-2 (1, 2, 4, 8, etc...) are written out with 0s and a single 1 (0001, 0010, 0100, 1000, etc...). In a message, these powers-of-2 bits will be our <span className="colorParityBit">&nbsp;<strong>parity bits</strong>&nbsp;</span>. These powers-of-2 parity bits track the parity of the other bits in the message whose position have a 1 in the same place. If one of bits is flipped, the parity will be wrong. When you calculate what the parity should be, your parity bits point to the location of the error! If you select a data length that makes a square, you can visually see that each parity bit tracks certain rows and columns, splitting the message in halves to efficiently locate where the error is, like a game of "20 questions" or like a binary search.</div>
+          <div>In binary, powers-of-2 (1, 2, 4, 8, 16, etc...) are written out with 0s and a single 1 (0001, 0010, 0100, 1000, etc...). In a message, these powers-of-2 bits will be our <span className="colorParityBit">&nbsp;<strong>parity bits</strong>&nbsp;</span>. These powers-of-2 parity bits track the parity of the other bits in the message whose position have a 1 in the same place. If one of bits is flipped, the parity will be wrong. When you calculate what the parity should be, your parity bits point to the location of the error! If you select a data length that makes a square, you can visually see that each parity bit tracks certain rows and columns, splitting the message in halves to efficiently locate where the error is, like a game of "20 questions" or like a binary search.</div>
         </section>
 
         <section>
