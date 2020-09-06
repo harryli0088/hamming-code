@@ -1,11 +1,17 @@
 import zeroOrOne from "utils/zeroOrOne"
 
 /**
- * given a data array, return 0 if the data array is valid, else the index of the wrong bit or the data length if 2 errors are detected
+ * given a data array, return the error index and whether a double error is detected
  * @param  data data array
- * @return      0 if valid, else the index of the bit with an error if invalid, else the data length if 2 errors are detected
+ * @return      the error index and whether a double error is detected
  */
-export default function validateDataArray(data:number[]):number {
+export default function validateDataArray(
+  data:number[]
+):{
+  doubleError: boolean,
+  errorIndex: number,
+} {
+  let doubleError = false
   let errorIndex = 0
   let paritySum = 0
 
@@ -17,9 +23,10 @@ export default function validateDataArray(data:number[]):number {
   })
 
   //if the parity is correct AND we have an error, this means we detected a 2 bit error
-  if(paritySum%2===0 && errorIndex) {
-    return data.length
-  }
+  doubleError = paritySum%2===0 && errorIndex > 0
 
-  return errorIndex
+  return {
+    doubleError,
+    errorIndex,
+  }
 }

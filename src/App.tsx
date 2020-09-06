@@ -16,6 +16,25 @@ interface AppState {
   showBinary: boolean,
 }
 
+interface RegularParityBit {
+  bit: number,
+  bitIndex: number,
+}
+
+interface SharedBitProps {
+  doubleError: boolean,
+  errorIndex: number,
+  height: number,
+  mousedOverBitIndex: number,
+  numColumns: number,
+  numRows: number,
+  onClickBit: Function,
+  onMouseOverBit: Function,
+  paddedBinaryLength: number,
+  showBinary: boolean,
+  width: number,
+}
+
 class App extends React.Component<{},AppState> {
   constructor(props:{}) {
     super(props)
@@ -32,8 +51,8 @@ class App extends React.Component<{},AppState> {
     }
   }
 
-  swapIncorrectBit = (errorIndex: number) => {
-    if(errorIndex!==0 && errorIndex!==this.state.data.length) { //if this is a 1-bit error to swap
+  swapIncorrectBit = (doubleError:boolean, errorIndex: number) => {
+    if(errorIndex>0 && doubleError) { //if this is a 1-bit error to swap
       this.switchBit(errorIndex)
     }
   }
@@ -66,7 +85,7 @@ class App extends React.Component<{},AppState> {
       }
       else if(isPowerOf2(mousedOverBitIndex)) { //the moused over bit is a parity bit
         returnArray.push(
-          <span>It tracks all bits with a 1 in binary position {Math.log(mousedOverBitIndex)/Math.log(2) + 1}</span>
+          <span>It tracks all bits with a 1 in binary position {Math.log(mousedOverBitIndex)/Math.log(2)}</span>
         )
       }
       else { //else this is a regular bit. find it's parity bits
@@ -99,9 +118,9 @@ class App extends React.Component<{},AppState> {
     numberBits,
   })
 
-  getValidityStatus = (errorIndex:number) => {
+  getValidityStatus = (doubleError:boolean, errorIndex:number) => {
     //if we have a 2-bit error
-    if(errorIndex === this.state.data.length) {
+    if(doubleError) {
       return `There is 2-bit error. SECDED Hamming Code by itself cannot determine which bits were flipped.`
     }
     else if(errorIndex > 0) { //if there is a 1-bit error
@@ -110,6 +129,58 @@ class App extends React.Component<{},AppState> {
 
     return "There is no error in the message."
   }
+
+  getRegularParityBitsExplanation = (
+    doubleError: boolean,
+    errorIndex: number,
+    paddedBinaryLength: number,
+    regularParityBits: RegularParityBit[],
+    sharedBitProps: SharedBitProps,
+  ) => {
+    if(doubleError) { //if there is a 2-bit error
+      return (
+        <React.Fragment>
+          <div>This is what the values of the parity bits should be. Since the overall parity of the message is odd, this means that there is a 2-bit error!</div>
+          <div style={{display: "flex"}}>
+            {regularParityBits.map((parityBit) =>
+              <Bit
+                key={parityBit.bitIndex}
+
+                absolutePositioned={false}
+                bit={parityBit.bitIndex&errorIndex ? 1 : 0}
+                bitIndex={parityBit.bitIndex}
+                isCell={true}
+
+                {...sharedBitProps}
+              />
+            )}
+          </div>
+        </React.Fragment>
+      )
+    }
+    else if(errorIndex > 0) { //else if there is a single bit error
+      return (
+        <React.Fragment>
+          <div>This is what the values of the parity bits should be. Since the overall parity of the message is odd, this means that there is a 1-bit error in position {errorIndex} (binary {dec2binPadded(errorIndex, paddedBinaryLength)}). Note that the value of the parity bits is the position of the 1-bit error!</div>
+          <div style={{display: "flex"}}>
+            {regularParityBits.map((parityBit) =>
+              <Bit
+                key={parityBit.bitIndex}
+
+                absolutePositioned={false}
+                bit={parityBit.bitIndex&errorIndex ? 1 : 0}
+                bitIndex={parityBit.bitIndex}
+                isCell={true}
+
+                {...sharedBitProps}
+              />
+            )}
+          </div>
+        </React.Fragment>
+      )
+    }
+  }
+
 
   render() {
     const {
@@ -120,15 +191,23 @@ class App extends React.Component<{},AppState> {
       showBinary,
     } = this.state
 
-    const errorIndex = validateDataArray(data)
+    const {
+      doubleError,
+      errorIndex,
+    } = validateDataArray(data)
     const numColumns = Math.ceil(Math.sqrt(data.length))
     const numRows = Math.ceil(data.length/numColumns)
     const paddedBinaryLength = Math.ceil(Math.log(data.length)/Math.log(2))
+    const regularParityBits:RegularParityBit[] = data.filter((bit, bitIndex) => isPowerOf2(bitIndex)).map((bit, powerOf2) => ({
+      bit,
+      bitIndex: Math.pow(2, powerOf2),
+    })).reverse()
+    const totalNumParityBits = regularParityBits.length + 1
 
-    const numParityBits = Math.ceil(Math.log(data.length)/Math.log(2)) + 1
-    const efficiency = (data.length - numParityBits) / data.length
+    const efficiency = (100 * (data.length - totalNumParityBits) / data.length).toFixed(2)
 
-    const sharedBitProps = {
+    const sharedBitProps:SharedBitProps = {
+      doubleError,
       errorIndex,
       height: bitHeight,
       mousedOverBitIndex,
@@ -148,7 +227,7 @@ class App extends React.Component<{},AppState> {
           <div><i>Detecting and correcting 1-bit errors</i></div>
           <br/>
           <div>Computers represent data digitally as 1s and 0s, called 'bits'. Sometimes these bits are mistakenly swapped, for example a message garbled in transit between computers or a scratched CD. Invented in 1950 by Richard Hamming, Hamming Code can correct 1-bit errors and detect 2-bit errors, making data transfer and saving more resilient.</div>
-          <div>A <span className="colorParityBit">&nbsp;<strong>parity bit</strong>&nbsp;</span> is a single bit that tracks whether the number of 1's is odd or even. If the number of 1's is odd, the parity bit is 1; if the number of 1's is even, the parity bit is 0. Hamming cleverly arranged parity bits to track certain rows or columns, so that you will be able to correct 1-bit errors and detect 2-bit errors, known as Single Error Correction, Double Error Detection (SECDED)</div>
+          <div>A <span className="colorParityBit">&nbsp;<strong>parity bit</strong>&nbsp;</span> is a single bit that tracks whether the number of 1's is odd or even. If the number of 1's is odd, the parity bit is 1; if the number of 1's is even, the parity bit is 0. Hamming cleverly arranged parity bits to track certain rows or columns, so that you will be able to correct 1-bit errors and detect 2-bit errors.</div>
         </header>
 
         <section id="content">
@@ -174,7 +253,7 @@ class App extends React.Component<{},AppState> {
             <hr/>
 
             <div>
-              Efficiency: {data.length - numParityBits}/{data.length} = {(100*efficiency).toFixed(2)}%
+              Efficiency: {data.length - totalNumParityBits}/{data.length} = {efficiency}%
             </div>
 
             <div>
@@ -185,12 +264,12 @@ class App extends React.Component<{},AppState> {
 
             <div>Click on a bit to swap its value</div>
 
-            <div>{this.getValidityStatus(errorIndex)}</div>
+            <div>{this.getValidityStatus(doubleError, errorIndex)}</div>
 
             <div>
               <button
-                onClick={e => this.swapIncorrectBit(errorIndex)}
-                disabled={errorIndex===0 || errorIndex===data.length}
+                onClick={e => this.swapIncorrectBit(doubleError, errorIndex)}
+                disabled={errorIndex===0 || doubleError}
               >
                 Swap Incorrect Bit
               </button>
@@ -212,6 +291,7 @@ class App extends React.Component<{},AppState> {
                 <Bit
                   key={bitIndex}
 
+                  absolutePositioned={true}
                   bit={bit}
                   bitIndex={bitIndex}
                   isCell={true}
@@ -229,6 +309,7 @@ class App extends React.Component<{},AppState> {
                   <Bit
                     key={bitIndex}
 
+                    absolutePositioned={false}
                     bit={bit}
                     bitIndex={bitIndex}
                     isCell={false}
@@ -241,22 +322,56 @@ class App extends React.Component<{},AppState> {
           </div>
         </section>
 
+        <section>
+          <div>Current values of the parity bits</div>
+          <div style={{display: "flex"}}>
+            {regularParityBits.map((parityBit) =>
+              <Bit
+                key={parityBit.bitIndex}
+
+                absolutePositioned={false}
+                bit={parityBit.bit}
+                bitIndex={parityBit.bitIndex}
+                isCell={true}
+
+                {...sharedBitProps}
+              />
+            )}
+          </div>
+
+          {this.getRegularParityBitsExplanation(doubleError, errorIndex, paddedBinaryLength, regularParityBits, sharedBitProps)}
+        </section>
+
         <section id="video">
           <h2>3Blue1Brown's Explanation</h2>
           <iframe title="3blue1brown" width="560" height="315" src="https://www.youtube.com/embed/X8jsijhllIA" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
         </section>
 
         <section>
+          <h3>How to Arrange the Parity Bits</h3>
+
+          <div>In binary, powers-of-2 (1, 2, 4, 8, etc...) are written out with 0s and a single 1 (0001, 0010, 0100, 1000, etc...). In a message, these powers-of-2 bits will be our <span className="colorParityBit">&nbsp;<strong>parity bits</strong>&nbsp;</span>. These powers-of-2 parity bits track the parity of the other bits in the message whose position have a 1 in the same place. If one of bits is flipped, the parity will be wrong. When you calculate what the parity should be, your parity bits point to the location of the error! If you select a data length that makes a square, you can visually see that each parity bit tracks certain rows and columns, splitting the message in halves to efficiently locate where the error is, like a game of "20 questions" or like a binary search.</div>
+        </section>
+
+        <section>
+          <h3>Single Error Correction, Double Error Detection</h3>
+
+          <div>
+            Hamming Code by itself can correct 1-bit errors, but will become confused when there are 2-bit errors. Single Error Correction, Double Error Detection (SECDED) extends Hamming Code with an additional parity bit (ie the first dark green parity bit). This bit tracks the parity of the whole message, so that you can detect 2-bit errors (without being able to correct them). With this additional parity bit, the overall parity of the message should be even. If there is a 1-bit error, the regular parity bits will detect an error and the overall parity of the message is 1; you can assume there is a 1-bit error. If there is a 2-bit error, the regular parity bits will detect an error BUT the overall parity of the message is 0; you have detected a double error.
+          </div>
+        </section>
+
+        <section>
           <h3>Efficiency and Limitations</h3>
 
-          <div>
-            Of course, by having some parity bits, not all bits can be used to transmit data. In this case, you need {numParityBits} parity bits to track {data.length - numParityBits} bits of data. Generally, the longer the message, the more efficient the Hamming Code become. The longer the message, however, the more likely the chance of bit errors, rendering Hamming Code insufficient since it cannot detect 3 or more errors.
-          </div>
+          <p>
+            Of course, by having some parity bits, not all bits can be used to transmit data. In this case, you need {totalNumParityBits} parity bits to track {data.length - totalNumParityBits} bits of data for an overall efficiency of {efficiency}%. Generally, the longer the message, the more efficient the Hamming Code become. The longer the message, however, the more likely the chance of bit errors, rendering Hamming Code insufficient since it cannot detect 3 or more errors.
+          </p>
 
-          <div>From Wikiepdia:</div>
-          <div>
+          <p>From Wikiepdia:</p>
+          <p>
             <i>"If the decoder does not attempt to correct errors, it can reliably detect triple bit errors. If the decoder does correct errors, some triple errors will be mistaken for single errors and "corrected" to the wrong value. Error correction is therefore a trade-off between certainty (the ability to reliably detect triple bit errors) and resiliency (the ability to keep functioning in the face of single bit errors)."</i>
-          </div>
+          </p>
         </section>
 
         <footer>

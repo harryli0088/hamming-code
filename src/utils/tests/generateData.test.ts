@@ -11,7 +11,10 @@ it('generates the right 2d data array', () => {
       data.forEach(cell => {
         expect(cell===1 || cell===0).toEqual(true)
       })
-      expect(validateDataArray(data)).toEqual(0)
+      expect(validateDataArray(data)).toEqual({
+        doubleError: false,
+        errorIndex: 0,
+      })
 
       //expect the overall parity to be 0
       expect(

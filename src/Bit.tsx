@@ -5,8 +5,10 @@ import isPowerOf2 from "utils/isPowerOf2"
 import "./bit.scss"
 
 interface BitProps {
+  absolutePositioned:boolean,
   bit: number,
   bitIndex: number,
+  doubleError: boolean,
   errorIndex: number,
   height: number,
   isCell: boolean,
@@ -20,17 +22,24 @@ interface BitProps {
   width: number,
 }
 
+interface AbsolutePosition {
+  position: "absolute" | "relative",
+  left?: string,
+  top?: string,
+}
+
 class Bit extends React.Component<BitProps,{}> {
   getColorClassName = () => {
     const {
       bitIndex,
+      doubleError,
       errorIndex,
     } = this.props
 
     if(bitIndex === 0) { //if this is the 0th cell
       return "colorZerothBit"
     }
-    else if(errorIndex === bitIndex) {
+    else if(doubleError===false && errorIndex===bitIndex) {
       return "colorErrorBit"
     }
     else if(isPowerOf2(bitIndex)) { //if this is a parity bit
@@ -95,6 +104,7 @@ class Bit extends React.Component<BitProps,{}> {
 
   render() {
     const {
+      absolutePositioned,
       bit,
       bitIndex,
       height,
@@ -112,22 +122,28 @@ class Bit extends React.Component<BitProps,{}> {
     const opacityClassName = this.getOpacityClassName()
 
     if(isCell) {
+      const absolutePosition:AbsolutePosition = {position: "relative"}
+      if(absolutePositioned) {
+        absolutePosition.position = "absolute"
+        absolutePosition.left = (100 * (bitIndex % numColumns) / numColumns).toString()+"%" //TODO memoize this
+        absolutePosition.top = (100 * Math.floor(bitIndex/numColumns) / numRows).toString()+"%"
+      }
+
       return (
-        <div
+        <span
           className={`bit cell ${colorClassName} ${opacityClassName}` }
           onClick={e => onClickBit(bitIndex)}
           onMouseOver={e => onMouseOverBit(bitIndex)}
           style={{
             height: height - 2,
-            left: (100 * (bitIndex % numColumns) / numColumns).toString()+"%", //TODO memoize this
-            top: (100 * Math.floor(bitIndex/numColumns) / numRows).toString()+"%",
             width: width - 2,
+            ...absolutePosition,
           }}
         >
           <div className="value">{bit}</div>
           <div className="binaryBitIndex">{showBinary ? dec2binPadded(bitIndex, paddedBinaryLength) : null}</div>
           <div className="bitIndex">{bitIndex}</div>
-        </div>
+        </span>
       )
     }
 

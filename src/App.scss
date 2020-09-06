@@ -10,11 +10,16 @@ $standard-border: 1px solid gray;
     padding-top: 0;
   }
 
+  section {
+    padding: 1em;
+  }
+
   #content {
     display: flex;
     height: 100vh;
     overflow: hidden;
     border-bottom: $standard-border;
+    padding: 0;
 
     #sidebar {
       width: calc(#{$sidebar-width} - 1px);
