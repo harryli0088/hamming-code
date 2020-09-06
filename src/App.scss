@@ -124,6 +124,7 @@ $standard-border: 1px solid gray;
 
 
 $button-background-color: #2E86C1;
+$button-border-color: #1B4F72;
 button {
   background: $button-background-color;
   color: white;
@@ -137,8 +138,8 @@ button {
   transition: 0.5s;
 
   &.grouped {
-    border-right: 0.5px solid #ccc;
-    border-left: 0.5px solid #ccc;
+    border-right: 0.5px solid $button-border-color;
+    border-left: 0.5px solid $button-border-color;
 
     &:first-child {
       border-left: none;

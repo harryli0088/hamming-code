@@ -18,7 +18,7 @@ interface BitProps {
   onClickBit: Function,
   onMouseOverBit: Function,
   paddedBinaryLength: number,
-  showBinary: boolean,
+  showBinary?: boolean,
   width: number,
 }
 
@@ -140,7 +140,9 @@ class Bit extends React.Component<BitProps,{}> {
             ...absolutePosition,
           }}
         >
-          <div className="value">{bit}</div>
+          <div className="value" style={{
+            paddingBottom: showBinary ? "0.25em" : "0"
+          }}>{bit}</div>
           <div className="binaryBitIndex">{showBinary ? dec2binPadded(bitIndex, paddedBinaryLength) : null}</div>
           <div className="bitIndex">{bitIndex}</div>
         </span>

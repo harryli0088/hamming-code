@@ -33,9 +33,10 @@ interface SharedBitProps {
   onClickBit: Function,
   onMouseOverBit: Function,
   paddedBinaryLength: number,
-  showBinary: boolean,
   width: number,
 }
+
+const MAX_ROW_BIT_SHOW_BINARY = 6
 
 class App extends React.Component<{},AppState> {
   constructor(props:{}) {
@@ -154,6 +155,7 @@ class App extends React.Component<{},AppState> {
                 bit={regularParityBit.bitIndex&errorIndex ? 1 : 0}
                 bitIndex={regularParityBit.bitIndex}
                 isCell={true}
+                showBinary={regularParityBits.length <= MAX_ROW_BIT_SHOW_BINARY}
 
                 {...sharedBitProps}
               />
@@ -177,6 +179,7 @@ class App extends React.Component<{},AppState> {
                 bit={regularParityBit.bitIndex&errorIndex ? 1 : 0}
                 bitIndex={regularParityBit.bitIndex}
                 isCell={true}
+                showBinary={regularParityBits.length <= MAX_ROW_BIT_SHOW_BINARY}
 
                 {...sharedBitProps}
               />
@@ -245,7 +248,6 @@ class App extends React.Component<{},AppState> {
       onClickBit: this.switchBit,
       onMouseOverBit: this.onMouseOverBit,
       paddedBinaryLength,
-      showBinary,
       width: bitWidth,
     }
 
@@ -304,6 +306,7 @@ class App extends React.Component<{},AppState> {
                   bit={parityBit.bit}
                   bitIndex={parityBit.bitIndex}
                   isCell={true}
+                  showBinary={regularParityBits.length <= MAX_ROW_BIT_SHOW_BINARY}
 
                   {...sharedBitProps}
                 />
@@ -340,6 +343,7 @@ class App extends React.Component<{},AppState> {
                     bit={bit}
                     bitIndex={bitIndex}
                     isCell={true}
+                    showBinary={showBinary}
 
                     {...sharedBitProps}
                   />
