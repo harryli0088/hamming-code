@@ -1,3 +1,5 @@
+$position-color: #777;
+
 .bit {
   color: black;
   text-align: center;
@@ -29,7 +31,7 @@
     bottom: 0.1em;
     left: 50%;
     transform: translateX(-50%);
-    color: gray;
+    color: $position-color;
   }
 
   .bitIndex {
@@ -37,7 +39,7 @@
     top: 0;
     left: 0.1em;
     padding: 0.1em;
-    color: gray;
+    color: $position-color;
   }
 }
 

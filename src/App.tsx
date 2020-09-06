@@ -1,7 +1,8 @@
 import React from 'react';
 import memoize from 'memoize-one'
 
-import Bit from "Bit"
+import Bit from "Components/Bit/Bit"
+import ColorBinary from "Components/ColorBinary/ColorBinary"
 import dec2binPadded from "utils/dec2binPadded"
 import generateData from "utils/generateData"
 import isPowerOf2 from "utils/isPowerOf2"
@@ -91,7 +92,7 @@ class App extends React.Component<{},AppState> {
       const returnArray = [
         <span>
           You are hovering over bit {mousedOverBitIndex}
-          <span className="floatRight">(binary {dec2binPadded(mousedOverBitIndex, paddedBinaryLength)})</span>
+          <span className="floatRight">(binary <ColorBinary number={mousedOverBitIndex} paddedBinaryLength={paddedBinaryLength}/>)</span>
         </span>,
         <br/>
       ]
@@ -118,7 +119,7 @@ class App extends React.Component<{},AppState> {
             returnArray.push(
               <span>
                 It is tracked by parity bit {bitIndex}
-                <span className="floatRight">(binary {dec2binPadded(bitIndex, paddedBinaryLength)})</span>
+                <span className="floatRight">(binary <ColorBinary number={bitIndex} paddedBinaryLength={paddedBinaryLength}/>)</span>
               </span>
             )
           }
@@ -322,7 +323,7 @@ class App extends React.Component<{},AppState> {
               Click on a bit to swap its value!
 
               <span id="toggleShowBinary">
-                Show Binary Position <input type="checkbox" checked={showBinary} onChange={e => this.setState({showBinary:!showBinary})}/>
+                Show Binary Positions <input type="checkbox" checked={showBinary} onChange={e => this.setState({showBinary:!showBinary})}/>
               </span>
             </div>
 
@@ -423,5 +424,8 @@ class App extends React.Component<{},AppState> {
     );
   }
 }
+
+
+
 
 export default App;
