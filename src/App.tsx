@@ -1,4 +1,5 @@
 import React from 'react';
+import memoize from 'memoize-one'
 
 import Bit from "Bit"
 import dec2binPadded from "utils/dec2binPadded"
@@ -51,17 +52,35 @@ class App extends React.Component<{},AppState> {
     }
   }
 
-  swapIncorrectBit = (doubleError:boolean, errorIndex: number) => {
-    if(errorIndex>0 && doubleError===false) { //if this is a 1-bit error to swap
-      this.switchBit(errorIndex)
-    }
-  }
+  calculations = memoize(
+    (data:number[]) => {
+      const numColumns = Math.ceil(Math.sqrt(data.length))
 
-  switchBit = (bitIndex: number) => {
-    const dataCopy = this.state.data.slice()
-    dataCopy[bitIndex] = dataCopy[bitIndex]>0 ? 0 : 1 //switch the bit
-    this.setState({data: dataCopy})
-  }
+      //pull out the regular parity bits
+      const regularParityBits:RegularParityBit[] = data.filter(
+        (bit, bitIndex) => isPowerOf2(bitIndex)
+      ).map((bit, powerOf2) => ({
+        bit, //track the bit value
+        bitIndex: Math.pow(2, powerOf2), //track the original bit index
+      })).reverse() //reverse them so we can put them in binary order
+      const totalNumParityBits = regularParityBits.length + 1
+
+      return {
+        ...validateDataArray(this.state.data), //doubleError, errorIndex, parity
+        efficiency: (100 * (data.length - totalNumParityBits) / data.length).toFixed(2),
+        numColumns,
+        numRows: Math.ceil(data.length/numColumns),
+        paddedBinaryLength: Math.ceil(Math.log(data.length)/Math.log(2)),
+        regularParityBits,
+        totalNumParityBits,
+      }
+    }
+  )
+
+  generateNewData = (numberBits: number) => this.setState({
+    data: generateData(numberBits),
+    numberBits,
+  })
 
   getMousedOverText = (paddedBinaryLength:number) => {
     const {
@@ -111,25 +130,6 @@ class App extends React.Component<{},AppState> {
 
     return "Hover over a bit to learn more!"
   }
-
-  onMouseOverBit = (bitIndex: number) => this.setState({mousedOverBitIndex:bitIndex})
-
-  generateNewData = (numberBits: number) => this.setState({
-    data: generateData(numberBits),
-    numberBits,
-  })
-
-  // getValidityStatus = (doubleError:boolean, errorIndex:number) => {
-  //   //if we have a 2-bit error
-  //   if(doubleError) {
-  //     return `There is 2-bit error. SECDED Hamming Code by itself cannot determine which bits were flipped.`
-  //   }
-  //   else if(errorIndex > 0) { //if there is a 1-bit error
-  //     return `There is a 1-bit error with bit ${errorIndex}! Swap it's value to fix the error.`
-  //   }
-  //
-  //   return "There is no error in the message."
-  // }
 
   getRegularParityBitsExplanation = (
     doubleError: boolean,
@@ -182,6 +182,33 @@ class App extends React.Component<{},AppState> {
     }
   }
 
+  // getValidityStatus = (doubleError:boolean, errorIndex:number) => {
+  //   //if we have a 2-bit error
+  //   if(doubleError) {
+  //     return `There is 2-bit error. SECDED Hamming Code by itself cannot determine which bits were flipped.`
+  //   }
+  //   else if(errorIndex > 0) { //if there is a 1-bit error
+  //     return `There is a 1-bit error with bit ${errorIndex}! Swap it's value to fix the error.`
+  //   }
+  //
+  //   return "There is no error in the message."
+  // }
+
+  onMouseOverBit = (bitIndex: number) => this.setState({mousedOverBitIndex:bitIndex})
+
+  swapIncorrectBit = (doubleError:boolean, errorIndex: number) => {
+    if(errorIndex>0 && doubleError===false) { //if this is a 1-bit error to swap
+      this.switchBit(errorIndex)
+    }
+  }
+
+  switchBit = (bitIndex: number) => {
+    const dataCopy = this.state.data.slice()
+    dataCopy[bitIndex] = dataCopy[bitIndex]>0 ? 0 : 1 //switch the bit
+    this.setState({data: dataCopy})
+  }
+
+
 
   render() {
     const {
@@ -194,18 +221,15 @@ class App extends React.Component<{},AppState> {
 
     const {
       doubleError,
+      efficiency,
       errorIndex,
-    } = validateDataArray(data)
-    const numColumns = Math.ceil(Math.sqrt(data.length))
-    const numRows = Math.ceil(data.length/numColumns)
-    const paddedBinaryLength = Math.ceil(Math.log(data.length)/Math.log(2))
-    const regularParityBits:RegularParityBit[] = data.filter((bit, bitIndex) => isPowerOf2(bitIndex)).map((bit, powerOf2) => ({
-      bit,
-      bitIndex: Math.pow(2, powerOf2),
-    })).reverse()
-    const totalNumParityBits = regularParityBits.length + 1
-
-    const efficiency = (100 * (data.length - totalNumParityBits) / data.length).toFixed(2)
+      numColumns,
+      numRows,
+      paddedBinaryLength,
+      regularParityBits,
+      totalNumParityBits,
+      parity,
+    } = this.calculations(data)
 
     const sharedBitProps:SharedBitProps = {
       doubleError,
