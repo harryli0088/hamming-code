@@ -11,22 +11,20 @@ export default function validateDataArray(
   doubleError: boolean,
   errorIndex: number,
 } {
-  let doubleError = false
   let errorIndex = 0
-  let paritySum = 0
+  let parity = 0
 
   data.forEach((bit, bitIndex) => {
-    if(zeroOrOne(bit) === 1) { //if this bit is one
-      errorIndex = errorIndex ^ bitIndex //XOR the bit index
-      ++paritySum //increment the parity sum (this includes the first overall parity bit)
+    const value = zeroOrOne(bit)
+    if(value === 1) { //if this bit is one
+      errorIndex ^= bitIndex //XOR the bit index
     }
+
+    parity ^= value //get the parity of the data (this includes the first overall parity bit)
   })
 
-  //if the parity is correct AND we have an error, this means we detected a 2 bit error
-  doubleError = paritySum%2===0 && errorIndex > 0
-
   return {
-    doubleError,
+    doubleError: parity===0 && errorIndex > 0, //if the parity is correct AND we have an error, this means we detected a 2 bit error
     errorIndex,
   }
 }
