@@ -1,5 +1,7 @@
 import React from 'react';
 import memoize from 'memoize-one'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
 import Bit from "Components/Bit/Bit"
 import ColorBinary from "Components/ColorBinary/ColorBinary"
@@ -255,6 +257,11 @@ class App extends React.Component<{},AppState> {
       <div id="App">
         <header>
           <h1>Hamming Code</h1>
+          <div id="github">
+            <a href="https://github.com/harryli0088/hamming-code" target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faGithub}/>
+            </a>
+          </div>
           <p><i>Single Error Correction, Double Error Detection</i></p>
           <p>Computers represent data digitally as 1s and 0s, called 'bits'. Sometimes these bits are mistakenly swapped, for example: a scratched CD or a message garbled in transit between computers. Invented in 1950 by Richard Hamming, Hamming Code can correct 1-bit errors and detect 2-bit errors, making data transfer and saving more robust.</p>
           <p>A <span className="colorZerothBit" style={{color: "black"}}>&nbsp;<b>parity bit</b>&nbsp;</span> is a single bit that tracks whether the number of 1's is odd or even. If the number of 1's is odd, the parity bit is 1; if the number of 1's is even, the parity bit is 0. Hamming cleverly arranged parity bits to track certain rows or columns, so that we will be able to correct 1-bit errors and, with an extra step, detect 2-bit errors.</p>
@@ -415,6 +422,8 @@ class App extends React.Component<{},AppState> {
 
         <footer>
           <p>Thank you to 3Blue1Brown for the inspiration and explanation! <a href="https://www.3blue1brown.com/" target="_blank" rel="noopener noreferrer">https://www.3blue1brown.com/</a></p>
+
+          <p>Github Repo: <a href="https://github.com/harryli0088/hamming-code" target="_blank" rel="noopener noreferrer">https://github.com/harryli0088/hamming-code</a></p>
 
           <p>
             Read more about Hamming Code: <a href="https://en.wikipedia.org/wiki/Hamming_code" target="_blank" rel="noopener noreferrer">https://en.wikipedia.org/wiki/Hamming_code</a>

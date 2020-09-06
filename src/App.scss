@@ -5,6 +5,7 @@ $standard-border: 1px solid gray;
   overflow: auto;
   color: white;
   background: #333;
+  position: relative;
 
   header {
     border-bottom: $standard-border;
@@ -14,6 +15,17 @@ $standard-border: 1px solid gray;
 
   section {
     padding: 1em;
+  }
+
+  #github {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    font-size: 2em;
+
+    a {
+      color: white;
+    }
   }
 
   #content {
