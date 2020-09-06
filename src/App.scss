@@ -16,7 +16,7 @@ $standard-border: 1px solid gray;
 
   #content {
     display: flex;
-    height: 100vh;
+    height: 80vh;
     overflow: hidden;
     border-bottom: $standard-border;
     padding: 0;
@@ -35,18 +35,60 @@ $standard-border: 1px solid gray;
       }
     }
 
-    #data {
-      padding: 1em;
-      background: #eee;
+    #interactiveContainer {
+      display: flex;
+      flex-direction: column;
       width: calc(100% - #{$sidebar-width});
-      overflow: auto;
+      position: relative;
+      overflow: hidden;
 
-      #bitsContainer {
-        position: relative;
+      #clickSwapMessage {
+        padding: 1em;
+        border-bottom: $standard-border;
       }
 
-      #rawMessageContainer {
-        border: $standard-border;
+      #toggleShowBinary {
+        float: right;
+      }
+
+      #dataContainer {
+        background: #eee;
+        overflow: auto;
+        height: 100%;
+        padding: 1em;
+
+        #cellsContainer {
+          position: relative;
+        }
+
+        // #rawMessageContainer {
+        //   border: $standard-border;
+        // }
+      }
+
+      #legend {
+        display: flex;
+        justify-content: center;
+        border-top: $standard-border;
+        padding: 1em;
+
+        .legendKey {
+          .legendSquare {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            border: 1px solid black;
+
+            margin-top: 3px;
+            margin-bottom: -3px;
+          }
+
+          &:not(:last-child) {
+            padding-right: 1em;
+            margin-right: 1em;
+            border-right: $standard-border;
+          }
+        }
       }
     }
   }
