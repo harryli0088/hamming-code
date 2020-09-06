@@ -238,6 +238,13 @@ class App extends React.Component<{},AppState> {
           <iframe title="3blue1brown" width="560" height="315" src="https://www.youtube.com/embed/X8jsijhllIA" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
         </section>
 
+        <section>
+          <h3>Limitations</h3>
+
+          <div>From Wikiepdia:</div>
+          <div><i>"If the decoder does not attempt to correct errors, it can reliably detect triple bit errors. If the decoder does correct errors, some triple errors will be mistaken for single errors and "corrected" to the wrong value. Error correction is therefore a trade-off between certainty (the ability to reliably detect triple bit errors) and resiliency (the ability to keep functioning in the face of single bit errors)."</i></div>
+        </section>
+
         <footer>
           <div>Thank you to 3Blue1Brown for the inspiration and explanation!</div>
 

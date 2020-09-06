@@ -12,6 +12,11 @@ it('generates the right 2d data array', () => {
         expect(cell===1 || cell===0).toEqual(true)
       })
       expect(validateDataArray(data)).toEqual(0)
+
+      //expect the overall parity to be 0
+      expect(
+        data.reduce((accumulator, currentValue) => accumulator^=currentValue, 0)
+      ).toEqual(0)
     }
   })
 });

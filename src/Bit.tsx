@@ -110,7 +110,6 @@ class Bit extends React.Component<BitProps,{}> {
 
     const colorClassName = this.getColorClassName()
     const opacityClassName = this.getOpacityClassName()
-    const renderBit = bitIndex>0 ? bit : "-"
 
     if(isCell) {
       return (
@@ -125,7 +124,7 @@ class Bit extends React.Component<BitProps,{}> {
             width: width - 2,
           }}
         >
-          <div className="value">{renderBit}</div>
+          <div className="value">{bit}</div>
           <div className="binaryBitIndex">{showBinary ? dec2binPadded(bitIndex, paddedBinaryLength) : null}</div>
           <div className="bitIndex">{bitIndex}</div>
         </div>
@@ -138,7 +137,7 @@ class Bit extends React.Component<BitProps,{}> {
         onClick={e => onClickBit(bitIndex)}
         onMouseOver={e => onMouseOverBit(bitIndex)}
       >
-        {renderBit}
+        {bit}
       </span>
     )
   }
