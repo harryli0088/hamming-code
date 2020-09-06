@@ -64,7 +64,7 @@ class Bit extends React.Component<BitProps,{}> {
     } = this.props
 
     if(bitIndex === 0) { //if this is the 0th cell
-      if(mousedOverBitIndex >= 0) {
+      if(mousedOverBitIndex > 0) {
         return "opacityDimmed"
       }
       return ""

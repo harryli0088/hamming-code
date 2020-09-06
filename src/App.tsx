@@ -33,7 +33,7 @@ class App extends React.Component<{},AppState> {
   }
 
   swapIncorrectBit = (errorIndex: number) => {
-    if(errorIndex > 0) { //if this is a bit to switch
+    if(errorIndex!==0 && errorIndex!==this.state.data.length) { //if this is a 1-bit error to swap
       this.switchBit(errorIndex)
     }
   }
@@ -58,7 +58,11 @@ class App extends React.Component<{},AppState> {
       ]
 
       if(mousedOverBitIndex === 0) {
-        //TODO
+        returnArray.push(
+          <span>
+            It tracks the parity of the rest of the message. Including this bit, the overall parity of the message should be 0 (even). If the other parity bits detect an error AND the parity of the whole message is odd, we assume there is a 1-bit error. If the other parity bits detect an error AND the parity of the whole message is even, we assume there is a 2-bit error.
+          </span>
+        )
       }
       else if(isPowerOf2(mousedOverBitIndex)) { //the moused over bit is a parity bit
         returnArray.push(
@@ -96,8 +100,12 @@ class App extends React.Component<{},AppState> {
   })
 
   getValidityStatus = (errorIndex:number) => {
-    if(errorIndex > 0) { //if there is an error
-      return `There is an error with bit ${errorIndex}! Swap it's value to fix the error.`
+    //if we have a 2-bit error
+    if(errorIndex === this.state.data.length) {
+      return `There is 2-bit error. SECDED Hamming Code by itself cannot determine which bits were flipped.`
+    }
+    else if(errorIndex > 0) { //if there is a 1-bit error
+      return `There is a 1-bit error with bit ${errorIndex}! Swap it's value to fix the error.`
     }
 
     return "There is no error in the message."
@@ -140,7 +148,7 @@ class App extends React.Component<{},AppState> {
           <div><i>Detecting and correcting 1-bit errors</i></div>
           <br/>
           <div>Computers represent data digitally as 1s and 0s, called 'bits'. Sometimes these bits are mistakenly swapped, for example a message garbled in transit between computers or a scratched CD. Invented in 1950 by Richard Hamming, Hamming Code can correct 1-bit errors and detect 2-bit errors, making data transfer and saving more resilient.</div>
-          <div>A <span className="colorParityBit">&nbsp;<strong>parity bit</strong>&nbsp;</span> is a single bit that tracks whether the number of 1's is odd or even. If the number of 1's is odd, the parity bit is 1; if the number of 1's is even, the parity bit is 0. Hamming cleverly arranged parity bits to track certain rows or columns, so that you will be able to correct 1-bit errors and detect 2-bit errors. In this example, you need {numParityBits} parity bits to track {data.length - numParityBits} bits of data. Generally, the longer the message, the more efficient the Hamming Code become. The longer the message, however, the more likely the chance of bit errors, rendering Hamming Code insufficient since it cannot detect 3 or more errors.</div>
+          <div>A <span className="colorParityBit">&nbsp;<strong>parity bit</strong>&nbsp;</span> is a single bit that tracks whether the number of 1's is odd or even. If the number of 1's is odd, the parity bit is 1; if the number of 1's is even, the parity bit is 0. Hamming cleverly arranged parity bits to track certain rows or columns, so that you will be able to correct 1-bit errors and detect 2-bit errors, known as Single Error Correction, Double Error Detection (SECDED)</div>
         </header>
 
         <section id="content">
@@ -182,7 +190,7 @@ class App extends React.Component<{},AppState> {
             <div>
               <button
                 onClick={e => this.swapIncorrectBit(errorIndex)}
-                disabled={errorIndex === 0}
+                disabled={errorIndex===0 || errorIndex===data.length}
               >
                 Swap Incorrect Bit
               </button>
@@ -239,10 +247,16 @@ class App extends React.Component<{},AppState> {
         </section>
 
         <section>
-          <h3>Limitations</h3>
+          <h3>Efficiency and Limitations</h3>
+
+          <div>
+            Of course, by having some parity bits, not all bits can be used to transmit data. In this case, you need {numParityBits} parity bits to track {data.length - numParityBits} bits of data. Generally, the longer the message, the more efficient the Hamming Code become. The longer the message, however, the more likely the chance of bit errors, rendering Hamming Code insufficient since it cannot detect 3 or more errors.
+          </div>
 
           <div>From Wikiepdia:</div>
-          <div><i>"If the decoder does not attempt to correct errors, it can reliably detect triple bit errors. If the decoder does correct errors, some triple errors will be mistaken for single errors and "corrected" to the wrong value. Error correction is therefore a trade-off between certainty (the ability to reliably detect triple bit errors) and resiliency (the ability to keep functioning in the face of single bit errors)."</i></div>
+          <div>
+            <i>"If the decoder does not attempt to correct errors, it can reliably detect triple bit errors. If the decoder does correct errors, some triple errors will be mistaken for single errors and "corrected" to the wrong value. Error correction is therefore a trade-off between certainty (the ability to reliably detect triple bit errors) and resiliency (the ability to keep functioning in the face of single bit errors)."</i>
+          </div>
         </section>
 
         <footer>
