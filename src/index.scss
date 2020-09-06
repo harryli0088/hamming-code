@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+}
+
+#root {
+  height: 100vh;
+  overflow: auto;
+}
+
+$button-background-color: #2E86C1;
+$button-border-color: #1B4F72;
+button {
+  background: $button-background-color;
+  color: white;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5em;
+  padding-left: 1em;
+  padding-right: 1em;
+  font-weight: bold;
+  transition: 0.5s;
+
+  &.grouped {
+    border-right: 0.5px solid $button-border-color;
+    border-left: 0.5px solid $button-border-color;
+
+    &:first-child {
+      border-left: none;
+    }
+
+    &:last-child {
+      border-right: none;
+    }
+
+    &:active {
+      border-color: $button-background-color;
+    }
+  }
+
+  &:hover {
+    filter: brightness(1.25);
+  }
+
+  &:active {
+    transform: scale(0.8);
+  }
+}

@@ -107,6 +107,7 @@ $standard-border: 1px solid gray;
 
   #video {
     text-align: center;
+    border-bottom: $standard-border;
   }
 
   footer {
@@ -119,46 +120,5 @@ $standard-border: 1px solid gray;
     &:visited {
       color: #D2B4DE;
     }
-  }
-}
-
-
-$button-background-color: #2E86C1;
-$button-border-color: #1B4F72;
-button {
-  background: $button-background-color;
-  color: white;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5em;
-  padding-left: 1em;
-  padding-right: 1em;
-  font-weight: bold;
-  transition: 0.5s;
-
-  &.grouped {
-    border-right: 0.5px solid $button-border-color;
-    border-left: 0.5px solid $button-border-color;
-
-    &:first-child {
-      border-left: none;
-    }
-
-    &:last-child {
-      border-right: none;
-    }
-
-    &:active {
-      border-color: $button-background-color;
-    }
-  }
-
-  &:hover {
-    filter: brightness(1.25);
-  }
-
-  &:active {
-    transform: scale(0.8);
   }
 }

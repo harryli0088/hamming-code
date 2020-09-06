@@ -256,8 +256,8 @@ class App extends React.Component<{},AppState> {
         <header>
           <h1>Hamming Code</h1>
           <p><i>Single Error Correction, Double Error Detection</i></p>
-          <p>Computers represent data digitally as 1s and 0s, called 'bits'. Sometimes these bits are mistakenly swapped, for example: a scratched CD or a message garbled in transit between computers. Invented in 1950 by Richard Hamming, Hamming Code can correct 1-bit errors and detect 2-bit errors, making data transfer and saving more resilient.</p>
-          <p>A <span className="colorZerothBit" style={{color: "black"}}>&nbsp;<b>parity bit</b>&nbsp;</span> is a single bit that tracks whether the number of 1's is odd or even. If the number of 1's is odd, the parity bit is 1; if the number of 1's is even, the parity bit is 0. Hamming cleverly arranged parity bits to track certain rows or columns, so that you will be able to correct 1-bit errors and detect 2-bit errors.</p>
+          <p>Computers represent data digitally as 1s and 0s, called 'bits'. Sometimes these bits are mistakenly swapped, for example: a scratched CD or a message garbled in transit between computers. Invented in 1950 by Richard Hamming, Hamming Code can correct 1-bit errors and detect 2-bit errors, making data transfer and saving more robust.</p>
+          <p>A <span className="colorZerothBit" style={{color: "black"}}>&nbsp;<b>parity bit</b>&nbsp;</span> is a single bit that tracks whether the number of 1's is odd or even. If the number of 1's is odd, the parity bit is 1; if the number of 1's is even, the parity bit is 0. Hamming cleverly arranged parity bits to track certain rows or columns, so that we will be able to correct 1-bit errors and, with an extra step, detect 2-bit errors.</p>
         </header>
 
         <section id="content">
@@ -389,14 +389,14 @@ class App extends React.Component<{},AppState> {
         <section>
           <h3>How to Arrange the Parity Bits</h3>
 
-          <div>In everyday base-10 counting, powers-of-10 (1, 10, 100, etc...) are written with 0s and a single 1. Similarly, in binary, powers-of-2 (1, 2, 4, 8, 16, etc...) are written with 0s and a single 1 (0001, 0010, 0100, 1000, etc...). In a message, the bits in a powers-of-2 position will be our <span className="colorZerothBit" style={{color: "black"}}>&nbsp;<b>parity bits</b>&nbsp;</span>. These parity bits track the parity of the other bits in the message whose position have a 1 in the same place. If one of bits is flipped, the parity will be wrong. If you select a data length that makes a square, you can visually see that each parity bit tracks certain rows and columns, splitting the message in halves to efficiently locate where the error is, like a game of "20 questions" or like a binary search. When you calculate what the parity should be, your parity bits point to the location of the error!</div>
+          <div>In everyday base-10 counting, powers-of-10 (1, 10, 100, etc...) are written with 0s and a single 1. Similarly, in binary, powers-of-2 (1, 2, 4, 8, 16, etc...) are written with 0s and a single 1 (0001, 0010, 0100, 1000, etc...). In a message, the bits in a powers-of-2 position will be our <span className="colorZerothBit" style={{color: "black"}}>&nbsp;<b>parity bits</b>&nbsp;</span>. These parity bits track the parity of the other bits in the message whose position have a 1 in the same place. If one of bits is flipped, the parity will be wrong. If you select a data length that makes a square, you can visually see that each parity bit tracks certain rows and columns, splitting the message in halves to efficiently locate where the error is, like a game of "20 questions" or like a binary search. After calculating what the parity bits should equal, the parity bits point to the location of the error!</div>
         </section>
 
         <section>
           <h3>Single Error Correction, Double Error Detection</h3>
 
           <div>
-            Hamming Code by itself can correct 1-bit errors, but will become confused when there are 2-bit errors. Single Error Correction, Double Error Detection (SECDED) extends Hamming Code with an additional parity bit (ie the first dark green parity bit). This bit tracks the parity of the whole message, so that you can detect 2-bit errors (without being able to correct them). With this additional parity bit, the overall parity of the message should be even. If there is a 1-bit error, the regular parity bits will detect an error and the overall parity of the message is 1; you can assume there is a 1-bit error. If there is a 2-bit error, the regular parity bits will detect an error BUT the overall parity of the message is 0; you have detected a double error.
+            Hamming Code by itself can correct 1-bit errors, but will become confused when there are 2-bit errors. Single Error Correction, Double Error Detection (SECDED) extends Hamming Code with an additional parity bit (ie the first dark green parity bit). This bit tracks the parity of the whole message, so that we can detect 2-bit errors (without being able to correct them). With this additional parity bit, the overall parity of the message should be even. If there is a 1-bit error, the regular parity bits will detect an error and the overall parity of the message is 1; we can assume there is a 1-bit error. If there is a 2-bit error, the regular parity bits will detect an error BUT the overall parity of the message is 0; we have detected a double error.
           </div>
         </section>
 
@@ -404,7 +404,7 @@ class App extends React.Component<{},AppState> {
           <h3>Efficiency and Limitations</h3>
 
           <p>
-            Of course, by having some parity bits, not all bits can be used to transmit data. In this case, you need {totalNumParityBits} parity bits to track {data.length - totalNumParityBits} bits of data for an overall efficiency of {efficiency}%. Generally, the longer the message, the more efficient the Hamming Code become. The longer the message, however, the more likely the chance of bit errors, rendering Hamming Code insufficient since it cannot detect 3 or more errors.
+            Of course, by having some parity bits, not all bits can be used to transmit data. In this case, we need {totalNumParityBits} parity bits to track {data.length - totalNumParityBits} bits of data for an overall efficiency of {efficiency}%. Longer messages loosely correlate with higher efficiency. The longer the message, however, the more likely the chance of bit errors, rendering Hamming Code insufficient, since it cannot detect 3 or more errors.
           </p>
 
           <p>From Wikiepdia:</p>
@@ -414,7 +414,7 @@ class App extends React.Component<{},AppState> {
         </section>
 
         <footer>
-          <p>Thank you to 3Blue1Brown for the inspiration and explanation!</p>
+          <p>Thank you to 3Blue1Brown for the inspiration and explanation! <a href="https://www.3blue1brown.com/" target="_blank" rel="noopener noreferrer">https://www.3blue1brown.com/</a></p>
 
           <p>
             Read more about Hamming Code: <a href="https://en.wikipedia.org/wiki/Hamming_code" target="_blank" rel="noopener noreferrer">https://en.wikipedia.org/wiki/Hamming_code</a>
