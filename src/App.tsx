@@ -141,7 +141,7 @@ class App extends React.Component<{},AppState> {
     if(doubleError) { //if there is a 2-bit error
       return (
         <React.Fragment>
-          <div className="colorErrorBit">Double Error Detected!</div>
+          <div className="colorErrorBit errorDetected">Double Error Detected!</div>
           <div>This is what the values of the parity bits should be. Since the overall parity of the message is odd, this means that there is a 2-bit error!</div>
           <div className="regularParityBitsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})}>
             {regularParityBits.map((regularParityBit) =>
@@ -163,7 +163,7 @@ class App extends React.Component<{},AppState> {
     else if(errorIndex > 0) { //else if there is a single bit error
       return (
         <React.Fragment>
-          <div className="colorErrorBit">Single Error Detected!</div>
+          <div className="colorErrorBit errorDetected">Single Error Detected!</div>
           <div>This is what the values of the parity bits should be. Since the overall parity of the message is odd, this means that there is a 1-bit error in binary position {dec2binPadded(errorIndex, paddedBinaryLength)}, ie position {errorIndex}</div>
           <div className="regularParityBitsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})}>
             {regularParityBits.map((regularParityBit) =>
@@ -253,7 +253,7 @@ class App extends React.Component<{},AppState> {
           <h1>Hamming Code</h1>
           <p><i>Single Error Correction, Double Error Detection</i></p>
           <p>Computers represent data digitally as 1s and 0s, called 'bits'. Sometimes these bits are mistakenly swapped, for example: a scratched CD or a message garbled in transit between computers. Invented in 1950 by Richard Hamming, Hamming Code can correct 1-bit errors and detect 2-bit errors, making data transfer and saving more resilient.</p>
-          <p>A <span className="colorParityBit">&nbsp;<strong>parity bit</strong>&nbsp;</span> is a single bit that tracks whether the number of 1's is odd or even. If the number of 1's is odd, the parity bit is 1; if the number of 1's is even, the parity bit is 0. Hamming cleverly arranged parity bits to track certain rows or columns, so that you will be able to correct 1-bit errors and detect 2-bit errors.</p>
+          <p>A <span className="colorZerothBit" style={{color: "black"}}>&nbsp;<strong>parity bit</strong>&nbsp;</span> is a single bit that tracks whether the number of 1's is odd or even. If the number of 1's is odd, the parity bit is 1; if the number of 1's is even, the parity bit is 0. Hamming cleverly arranged parity bits to track certain rows or columns, so that you will be able to correct 1-bit errors and detect 2-bit errors.</p>
         </header>
 
         <section id="content">
@@ -376,7 +376,7 @@ class App extends React.Component<{},AppState> {
             <div id="legend">
               <span className="legendKey"><span className="legendSquare colorZerothBit"></span> Overall Parity Bit</span>
               <span className="legendKey"><span className="legendSquare colorParityBit"></span> Regular Parity Bit</span>
-              <span className="legendKey"><span className="legendSquare"></span> Data Bit</span>
+              <span className="legendKey"><span className="legendSquare colorDataBit"></span> Data Bit</span>
               <span className="legendKey"><span className="legendSquare colorErrorBit"></span> Error Bit</span>
             </div>
           </div>
@@ -390,7 +390,7 @@ class App extends React.Component<{},AppState> {
         <section>
           <h3>How to Arrange the Parity Bits</h3>
 
-          <div>In everyday base-10 counting, powers-of-10 (1, 10, 100, etc...) are written with 0s and a single 1. Similarly, in binary, powers-of-2 (1, 2, 4, 8, 16, etc...) are written with 0s and a single 1 (0001, 0010, 0100, 1000, etc...). In a message, the bits in a powers-of-2 bits will be our <span className="colorParityBit">&nbsp;<strong>parity bits</strong>&nbsp;</span>. These parity bits track the parity of the other bits in the message whose position have a 1 in the same place. If one of bits is flipped, the parity will be wrong. If you select a data length that makes a square, you can visually see that each parity bit tracks certain rows and columns, splitting the message in halves to efficiently locate where the error is, like a game of "20 questions" or like a binary search. When you calculate what the parity should be, your parity bits point to the location of the error!</div>
+          <div>In everyday base-10 counting, powers-of-10 (1, 10, 100, etc...) are written with 0s and a single 1. Similarly, in binary, powers-of-2 (1, 2, 4, 8, 16, etc...) are written with 0s and a single 1 (0001, 0010, 0100, 1000, etc...). In a message, the bits in a powers-of-2 position will be our <span className="colorZerothBit" style={{color: "black"}}>&nbsp;<strong>parity bits</strong>&nbsp;</span>. These parity bits track the parity of the other bits in the message whose position have a 1 in the same place. If one of bits is flipped, the parity will be wrong. If you select a data length that makes a square, you can visually see that each parity bit tracks certain rows and columns, splitting the message in halves to efficiently locate where the error is, like a game of "20 questions" or like a binary search. When you calculate what the parity should be, your parity bits point to the location of the error!</div>
         </section>
 
         <section>

@@ -3,6 +3,8 @@ $standard-border: 1px solid gray;
 
 #App {
   overflow: auto;
+  color: white;
+  background: #333;
 
   header {
     border-bottom: $standard-border;
@@ -33,6 +35,12 @@ $standard-border: 1px solid gray;
       .regularParityBitsContainer {
         display: flex;
       }
+
+      .errorDetected {
+        color: white;
+        padding: 0.25em;
+        font-weight: bold;
+      }
     }
 
     #interactiveContainer {
@@ -52,7 +60,7 @@ $standard-border: 1px solid gray;
       }
 
       #dataContainer {
-        background: #eee;
+        background: #555;
         overflow: auto;
         height: 100%;
         padding: 1em;
@@ -100,5 +108,12 @@ $standard-border: 1px solid gray;
   footer {
     padding: 0.5em;
     border-top: $standard-border;
+  }
+
+  a {
+    color: #AED6F1;
+    &:visited {
+      color: #D2B4DE;
+    }
   }
 }

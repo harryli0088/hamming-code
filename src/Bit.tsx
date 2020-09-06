@@ -57,13 +57,13 @@ class Bit extends React.Component<BitProps,{}> {
     //   && isPowerOf2(mousedOverBitIndex) //the moused over cell is a parity bit
     //   && bitIndex & mousedOverBitIndex //the ANDed bitwise operation produces a number
     // ) {
-    //   return "colorRegular" //return "coveredByParityBit"
+    //   return "colorDataBit" //return "coveredByParityBit"
     // }
     // else if(bitIndex === mousedOverBitIndex) { //if this is the cell being moused over
     //   return "colorMousedOver"
     // }
 
-    return "colorRegular"
+    return "colorDataBit"
   }
 
   getOpacityClassName = () => {
