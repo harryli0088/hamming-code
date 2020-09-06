@@ -117,7 +117,7 @@ $standard-border: 1px solid gray;
     }
   }
 
-  @media only screen and (max-width: 900px) {
+  @media only screen and (max-width: 1000px) {
     #content {
       flex-direction: column-reverse;
       height: auto;
@@ -128,6 +128,10 @@ $standard-border: 1px solid gray;
 
       #interactiveContainer {
         width: 100%;
+
+        #toggleShowBinary {
+          float: none;
+        }
       }
     }
   }

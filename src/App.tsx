@@ -332,9 +332,9 @@ class App extends React.Component<{},AppState> {
             <div id="clickSwapMessage">
               Click on a bit to swap its value!
 
-              <span id="toggleShowBinary">
+              <div id="toggleShowBinary">
                 Show Binary Positions <input type="checkbox" checked={showBinary} onChange={e => this.setState({showBinary:!showBinary})}/>
-              </span>
+              </div>
             </div>
 
             <div id="dataContainer">
