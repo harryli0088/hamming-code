@@ -30,6 +30,7 @@ $standard-border: 1px solid gray;
 
   #content {
     display: flex;
+    flex-direction: row-reverse;
     height: 80vh;
     overflow: hidden;
     border-bottom: $standard-border;
@@ -83,6 +84,15 @@ $standard-border: 1px solid gray;
 
         #cellsContainer {
           position: relative;
+
+          &:after {
+            content: "";
+            display: block;
+            position: absolute;
+            right: -1em;
+            width: 1em;
+            height: 1px;
+          }
         }
 
         #rawMessageContainer {
@@ -97,6 +107,8 @@ $standard-border: 1px solid gray;
         padding: 1em;
 
         .legendKey {
+          text-align: center;
+
           .legendSquare {
             display: inline-block;
             width: 1em;
@@ -105,6 +117,10 @@ $standard-border: 1px solid gray;
 
             margin-top: 3px;
             margin-bottom: -3px;
+          }
+
+          .legendText {
+            display: inline-block;
           }
 
           &:not(:last-child) {
@@ -119,15 +135,15 @@ $standard-border: 1px solid gray;
 
   @media only screen and (max-width: 1000px) {
     #content {
-      flex-direction: column-reverse;
+      flex-direction: column;
       height: auto;
 
       #sidebar {
-        width: 100%;
+        width: auto;
       }
 
       #interactiveContainer {
-        width: 100%;
+        width: auto;
 
         #toggleShowBinary {
           float: none;
@@ -139,9 +155,33 @@ $standard-border: 1px solid gray;
   #video {
     text-align: center;
     border-bottom: $standard-border;
+
+    #limitWidth {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 700px;
+
+      //taken from https://avexdesigns.com/blog/responsive-youtube-embed
+      #videoContainer {
+        position: relative;
+        padding-bottom: 56.25%;
+        padding-top: 30px;
+        height: 0;
+        overflow: hidden;
+
+        iframe, object, embed {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
   }
 
   footer {
+    background-color: #222;
     padding: 0.5em;
     border-top: $standard-border;
   }

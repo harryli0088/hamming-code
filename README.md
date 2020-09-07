@@ -1,3 +1,20 @@
+# Hamming Code
+
+Learn how Hamming Code works using this interactive website!
+
+https://harryli0088.github.io/hamming-code/
+
+![Screenshot](/public/screenshot.png)
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

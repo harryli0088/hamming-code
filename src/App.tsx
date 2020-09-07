@@ -203,7 +203,7 @@ class App extends React.Component<{},AppState> {
     }
   }
 
-  onMouseOverBit = (bitIndex: number) => this.setState({mousedOverBitIndex:bitIndex})
+  highlightBit = (bitIndex: number) => this.setState({mousedOverBitIndex:bitIndex})
 
   swapIncorrectBit = (doubleError:boolean, errorIndex: number) => {
     if(errorIndex>0 && doubleError===false) { //if this is a 1-bit error to swap
@@ -248,7 +248,7 @@ class App extends React.Component<{},AppState> {
       numColumns,
       numRows,
       onClickBit: this.switchBit,
-      onMouseOverBit: this.onMouseOverBit,
+      onMouseOverBit: this.highlightBit,
       paddedBinaryLength,
       width: bitWidth,
     }
@@ -268,6 +268,65 @@ class App extends React.Component<{},AppState> {
         </header>
 
         <section id="content">
+          <div id="interactiveContainer">
+            <div id="clickSwapMessage">
+              Click on a bit to swap its value!
+
+              <div id="toggleShowBinary">
+                Show Binary Positions <input type="checkbox" checked={showBinary} onChange={e => this.setState({showBinary:!showBinary})}/>
+              </div>
+            </div>
+
+            <div id="dataContainer">
+              <div id="cellsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})} style={{
+                height: bitHeight * numRows,
+                width: bitWidth * numColumns,
+              }}>
+                {data.map((bit, bitIndex) =>
+                  <Bit
+                    key={bitIndex}
+
+                    absolutePositioned={true}
+                    bit={bit}
+                    bitIndex={bitIndex}
+                    isCell={true}
+                    showBinary={showBinary}
+
+                    {...sharedBitProps}
+                  />
+                )}
+              </div>
+
+              <br/>
+
+              <br/>
+
+              <div>
+                <span id="rawMessageContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})}>
+                  {data.map((bit, bitIndex) =>
+                    <Bit
+                      key={bitIndex}
+
+                      absolutePositioned={false}
+                      bit={bit}
+                      bitIndex={bitIndex}
+                      isCell={false}
+
+                      {...sharedBitProps}
+                    />
+                  )}
+                </span>
+              </div>
+            </div>
+
+            <div id="legend">
+              <span className="legendKey"><span className="legendSquare colorZerothBit"></span> <span className="legendText">Overall Parity Bit</span></span>
+              <span className="legendKey"><span className="legendSquare colorParityBit"></span> <span className="legendText">Regular Parity Bit</span></span>
+              <span className="legendKey"><span className="legendSquare colorDataBit"></span> <span className="legendText">Data Bit</span></span>
+              <span className="legendKey"><span className="legendSquare colorErrorBit"></span> <span className="legendText">Error Bit</span></span>
+            </div>
+          </div>
+
           <div id="sidebar">
             <div>
               <div>
@@ -326,71 +385,16 @@ class App extends React.Component<{},AppState> {
 
             <div>{this.getMousedOverText(paddedBinaryLength)}</div>
           </div>
-
-
-          <div id="interactiveContainer">
-            <div id="clickSwapMessage">
-              Click on a bit to swap its value!
-
-              <div id="toggleShowBinary">
-                Show Binary Positions <input type="checkbox" checked={showBinary} onChange={e => this.setState({showBinary:!showBinary})}/>
-              </div>
-            </div>
-
-            <div id="dataContainer">
-              <div id="cellsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})} style={{
-                height: bitHeight * numRows,
-                width: bitWidth * numColumns,
-              }}>
-                {data.map((bit, bitIndex) =>
-                  <Bit
-                    key={bitIndex}
-
-                    absolutePositioned={true}
-                    bit={bit}
-                    bitIndex={bitIndex}
-                    isCell={true}
-                    showBinary={showBinary}
-
-                    {...sharedBitProps}
-                  />
-                )}
-              </div>
-
-              <br/>
-
-              <br/>
-
-              <div>
-                <span id="rawMessageContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})}>
-                  {data.map((bit, bitIndex) =>
-                    <Bit
-                      key={bitIndex}
-
-                      absolutePositioned={false}
-                      bit={bit}
-                      bitIndex={bitIndex}
-                      isCell={false}
-
-                      {...sharedBitProps}
-                    />
-                  )}
-                </span>
-              </div>
-            </div>
-
-            <div id="legend">
-              <span className="legendKey"><span className="legendSquare colorZerothBit"></span> Overall Parity Bit</span>
-              <span className="legendKey"><span className="legendSquare colorParityBit"></span> Regular Parity Bit</span>
-              <span className="legendKey"><span className="legendSquare colorDataBit"></span> Data Bit</span>
-              <span className="legendKey"><span className="legendSquare colorErrorBit"></span> Error Bit</span>
-            </div>
-          </div>
         </section>
 
         <section id="video">
           <h2>3Blue1Brown's Explanation</h2>
-          <iframe title="3blue1brown" width="560" height="315" src="https://www.youtube.com/embed/X8jsijhllIA" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+          <div id="limitWidth">
+            <div id="videoContainer">
+              <iframe title="3blue1brown" src="https://www.youtube.com/embed/X8jsijhllIA" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+            </div>
+          </div>
         </section>
 
         <section>
