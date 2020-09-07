@@ -264,7 +264,7 @@ class App extends React.Component<{},AppState> {
           </div>
           <p><i>Single Error Correction, Double Error Detection</i></p>
           <p>Computers represent data digitally as 1s and 0s, called 'bits'. Sometimes these bits are mistakenly swapped, for example: a scratched CD or a message garbled in transit between computers. Invented in 1950 by Richard Hamming, Hamming Code can correct 1-bit errors and detect 2-bit errors, making data transfer and saving more robust.</p>
-          <p>A <span className="colorZerothBit" style={{color: "black"}}>&nbsp;<b>parity bit</b>&nbsp;</span> is a single bit that tracks whether the number of 1's is odd or even. If the number of 1's is odd, the parity bit is 1; if the number of 1's is even, the parity bit is 0. Hamming cleverly arranged parity bits to track certain rows or columns, so that we will be able to correct 1-bit errors and, with an extra step, detect 2-bit errors.</p>
+          <p>A <span className="colorZerothBit" style={{color: "black"}}>&nbsp;<b>parity bit</b>&nbsp;</span> is a single bit that tracks whether the number of 1's is odd or even. If the number of 1's is odd, the parity bit is 1; if the number of 1's is even, the parity bit is 0. Hamming cleverly arranged each parity bit to track different halves of the data, so that we can correct 1-bit errors and, with an extra step, detect 2-bit errors.</p>
         </header>
 
         <section id="content">
