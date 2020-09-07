@@ -4,7 +4,7 @@ Learn how Hamming Code works using this interactive website!
 
 https://harryli0088.github.io/hamming-code/
 
-![Screenshot](/public/screenshot.png)
+![Gif](/public/hammingcode.gif)
 
 
 <br/>
