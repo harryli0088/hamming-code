@@ -37,8 +37,8 @@ interface SharedBitProps {
   width: number,
 }
 
-const MAX_ROW_BIT_SHOW_BINARY = 6 //maximum number of bits in a row before we stop showing binary (ie "Current value of the parity bits")
-const MAX_BIT_WIDTH = 100
+const MAX_ROW_CELL_SHOW_BINARY = 6 //maximum number of bits in a row before we stop showing binary (ie "Current value of the parity bits")
+const MAX_CELL_WIDTH = 100
 
 class App extends React.Component<{},AppState> {
   dataContainerInnerRef: React.RefObject<HTMLDivElement>
@@ -50,7 +50,7 @@ class App extends React.Component<{},AppState> {
 
     this.state = {
       data: generateData(numberBits),
-      dataContainerInnerWidth: Math.sqrt(16) * MAX_BIT_WIDTH,
+      dataContainerInnerWidth: Math.sqrt(16) * MAX_CELL_WIDTH,
       mousedOverBitIndex: -1,
       numberBits,
       showBinary: true,
@@ -98,7 +98,7 @@ class App extends React.Component<{},AppState> {
     ) => {
       //if the screen is too small, set the width to 1/4 of the available width
       //else cap the bit width
-      const dimension = Math.min(dataContainerInnerWidth/4, MAX_BIT_WIDTH)
+      const dimension = Math.min(dataContainerInnerWidth/4, MAX_CELL_WIDTH)
 
       return {
         bitHeight: dimension,
@@ -183,7 +183,7 @@ class App extends React.Component<{},AppState> {
                 bit={regularParityBit.bitIndex&errorIndex ? 1 : 0}
                 bitIndex={regularParityBit.bitIndex}
                 isCell={true}
-                showBinary={regularParityBits.length <= MAX_ROW_BIT_SHOW_BINARY}
+                showBinary={regularParityBits.length <= MAX_ROW_CELL_SHOW_BINARY}
 
                 {...sharedBitProps}
               />
@@ -207,7 +207,7 @@ class App extends React.Component<{},AppState> {
                 bit={regularParityBit.bitIndex&errorIndex ? 1 : 0}
                 bitIndex={regularParityBit.bitIndex}
                 isCell={true}
-                showBinary={regularParityBits.length <= MAX_ROW_BIT_SHOW_BINARY}
+                showBinary={regularParityBits.length <= MAX_ROW_CELL_SHOW_BINARY}
 
                 {...sharedBitProps}
               />
@@ -415,7 +415,7 @@ class App extends React.Component<{},AppState> {
                   bit={parityBit.bit}
                   bitIndex={parityBit.bitIndex}
                   isCell={true}
-                  showBinary={regularParityBits.length <= MAX_ROW_BIT_SHOW_BINARY}
+                  showBinary={regularParityBits.length <= MAX_ROW_CELL_SHOW_BINARY}
 
                   {...sharedBitProps}
                 />
