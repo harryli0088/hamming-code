@@ -12,9 +12,8 @@ import validateDataArray from "utils/validateDataArray"
 import './App.scss';
 
 interface AppState {
-  bitHeight: number,
-  bitWidth: number,
   data: number[],
+  dataContainerInnerWidth: number,
   mousedOverBitIndex: number,
   numberBits: number,
   showBinary: boolean,
@@ -38,22 +37,33 @@ interface SharedBitProps {
   width: number,
 }
 
-const MAX_ROW_BIT_SHOW_BINARY = 6
+const MAX_ROW_BIT_SHOW_BINARY = 6 //maximum number of bits in a row before we stop showing binary (ie "Current value of the parity bits")
+const MAX_BIT_WIDTH = 100
 
 class App extends React.Component<{},AppState> {
+  dataContainerInnerRef: React.RefObject<HTMLDivElement>
+
   constructor(props:{}) {
     super(props)
 
     const numberBits = 16
 
     this.state = {
-      bitHeight: 100,
-      bitWidth: 100,
       data: generateData(numberBits),
+      dataContainerInnerWidth: Math.sqrt(16) * MAX_BIT_WIDTH,
       mousedOverBitIndex: -1,
       numberBits,
       showBinary: true,
     }
+
+    this.dataContainerInnerRef = React.createRef()
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.resize)
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.resize)
   }
 
   calculations = memoize(
@@ -77,6 +87,22 @@ class App extends React.Component<{},AppState> {
         paddedBinaryLength: Math.ceil(Math.log(data.length)/Math.log(2)),
         regularParityBits,
         totalNumParityBits,
+      }
+    }
+  )
+
+  getBitDimensions = memoize(
+    (
+      dataContainerInnerWidth: number,
+      windowInnerWidth: number,
+    ) => {
+      //if the screen is too small, set the width to 1/4 of the available width
+      //else cap the bit width
+      const dimension = Math.min(dataContainerInnerWidth/4, MAX_BIT_WIDTH)
+
+      return {
+        bitHeight: dimension,
+        bitWidth: dimension,
       }
     }
   )
@@ -205,6 +231,14 @@ class App extends React.Component<{},AppState> {
 
   highlightBit = (bitIndex: number) => this.setState({mousedOverBitIndex:bitIndex})
 
+  resize = () => {
+    if(this.dataContainerInnerRef.current) {
+      this.setState({
+        dataContainerInnerWidth: this.dataContainerInnerRef.current.clientWidth,
+      })
+    }
+  }
+
   swapIncorrectBit = (doubleError:boolean, errorIndex: number) => {
     if(errorIndex>0 && doubleError===false) { //if this is a 1-bit error to swap
       this.switchBit(errorIndex)
@@ -221,12 +255,19 @@ class App extends React.Component<{},AppState> {
 
   render() {
     const {
-      bitHeight,
-      bitWidth,
       data,
+      dataContainerInnerWidth,
       mousedOverBitIndex,
       showBinary,
     } = this.state
+
+    const {
+      bitHeight,
+      bitWidth,
+    } = this.getBitDimensions(
+      dataContainerInnerWidth,
+      window.innerWidth,
+    )
 
     const {
       doubleError,
@@ -278,23 +319,25 @@ class App extends React.Component<{},AppState> {
             </div>
 
             <div id="dataContainer">
-              <div id="cellsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})} style={{
-                height: bitHeight * numRows,
-                width: bitWidth * numColumns,
-              }}>
-                {data.map((bit, bitIndex) =>
-                  <Bit
-                    key={bitIndex}
+              <div ref={this.dataContainerInnerRef}>
+                <div id="cellsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})} style={{
+                  height: bitHeight * numRows,
+                  width: bitWidth * numColumns,
+                }}>
+                  {data.map((bit, bitIndex) =>
+                    <Bit
+                      key={bitIndex}
 
-                    absolutePositioned={true}
-                    bit={bit}
-                    bitIndex={bitIndex}
-                    isCell={true}
-                    showBinary={showBinary}
+                      absolutePositioned={true}
+                      bit={bit}
+                      bitIndex={bitIndex}
+                      isCell={true}
+                      showBinary={showBinary}
 
-                    {...sharedBitProps}
-                  />
-                )}
+                      {...sharedBitProps}
+                    />
+                  )}
+                </div>
               </div>
 
               <br/>
