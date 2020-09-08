@@ -60,6 +60,7 @@ class App extends React.Component<{},AppState> {
   }
 
   componentDidMount() {
+    this.resize()
     window.addEventListener("resize", this.resize)
   }
   componentWillUnmount() {
