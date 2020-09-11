@@ -480,6 +480,11 @@ class App extends React.Component<{},AppState> {
           <p>
             Read more about error-correcting code: <a href="https://en.wikipedia.org/wiki/Linear_code" target="_blank" rel="noopener noreferrer">https://en.wikipedia.org/wiki/Linear_code</a>
           </p>
+
+          <hr/>
+
+          <p>This site was built using <a href="https://reactjs.org/" target="_blank" rel="noopener noreferrer">React</a> and <a href="https://www.typescriptlang.org/" target="_blank" rel="noopener noreferrer">Typescript</a></p>
+          <p>Media icons provided by <a href="https://fontawesome.com/" target="_blank" rel="noopener noreferrer">Font Awesome</a></p>
         </footer>
       </div>
     );
