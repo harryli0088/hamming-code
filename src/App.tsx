@@ -174,7 +174,7 @@ class App extends React.Component<{},AppState> {
         <React.Fragment>
           <br/>
           <div className="colorErrorBit errorDetected">Double Error Detected!</div>
-          <div>This is what the values of the parity bits should be. Since the overall parity of the message is odd, this means that there is a 2-bit error!</div>
+          <div>This is what the values of the parity bits should be. Since the overall parity of the message is even, this means that there is a 2-bit error!</div>
           <div className="regularParityBitsContainer" onMouseLeave={e => this.setState({mousedOverBitIndex:-1})}>
             {regularParityBits.map((regularParityBit) =>
               <Bit
