@@ -54,3 +54,25 @@ button {
     transform: scale(0.8);
   }
 }
+
+
+:root {
+  --tablet-padding:calc(50vw - 300px + 1em);
+  --desktop-padding:calc(50vw - 450px);
+}
+
+header, section, footer {
+  padding: 1em;
+}
+@media only screen and (min-width: 600px) {
+  section, footer {
+    padding-left: var(--tablet-padding);
+    padding-right: var(--tablet-padding);
+  }
+}
+@media only screen and (min-width: 1000px) {
+  section, footer {
+    padding-left: var(--desktop-padding);
+    padding-right: var(--desktop-padding);
+  }
+}

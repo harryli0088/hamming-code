@@ -9,12 +9,41 @@ $standard-border: 1px solid gray;
 
   header {
     border-bottom: $standard-border;
-    padding: 1em;
-    padding-top: 0;
-  }
+    background-color: #222;
+    display: flex;
+    flex-direction: column;
+    padding-top: 3em;
+    padding-bottom: 3em;
 
-  section {
-    padding: 1em;
+    & > a {
+      text-align: center;
+
+      img {
+        max-width: 300px;
+      }
+    }
+
+    & > div {
+      padding-top: 1em;
+    }
+  }
+  @media only screen and (min-width: 600px) {
+    header {
+      padding-left: calc(50vw - 300px + 1em);
+      padding-right: calc(50vw - 300px + 1em);
+    }
+  }
+  @media only screen and (min-width: 1000px) {
+    header {
+      padding-left: calc(50vw - 450px);
+      padding-right: calc(50vw - 450px);
+      flex-direction: row;
+
+      & > div {
+        padding-left: 1em;
+        padding-top: 0;
+      }
+    }
   }
 
   #github {
@@ -155,6 +184,7 @@ $standard-border: 1px solid gray;
   #video {
     text-align: center;
     border-bottom: $standard-border;
+    background-color: #222;
 
     #limitWidth {
       margin-left: auto;
@@ -182,7 +212,6 @@ $standard-border: 1px solid gray;
 
   footer {
     background-color: #222;
-    padding: 1em;
     border-top: $standard-border;
   }
 
